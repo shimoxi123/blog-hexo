@@ -1,10 +1,12 @@
 ---
 layout: friends # 必须
-title: 我的朋友们 # 可选，这是友链页的标题
+title: 友链 # 可选，这是友链页的标题
 ---
 
-这里写友链上方的内容。
-
 <!-- more -->
-
-这里可以写友链页面下方的文字备注，例如自己的友链规范、示例等。
+友链示例
+```
+  - title: "石墨烯积木"
+    url: https://www.shimxo.qzz.io/
+    avatar: https://cdn.jsdelivr.net/gh/shimoxi123/img/img/6894b49f58cb8da5c80fd8e5.webp
+```
