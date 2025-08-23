@@ -94,20 +94,43 @@ jobs:
           echo "Copying files from deploy/ directory to root..."
           DEPLOY_DIR="deploy"
           
+          # 确保我们在 main 分支上获取 deploy 文件
+          git checkout main
+          
           if [[ -d "$DEPLOY_DIR" ]]; then
+            echo "Deploy directory found, processing files..."
             for file in "$DEPLOY_DIR"/*; do
               if [[ -f "$file" ]]; then
                 filename=$(basename "$file")
                 echo "Processing deploy file: $filename"
                 
-                # 比较文件是否有变化
-                if ! cmp -s "$file" "$filename" 2>/dev/null; then
-                  echo "Copying $filename from $file to root directory..."
-                  cp "$file" "$filename"
+                # 切换到目标分支
+                git checkout $BRANCH
+                
+                # 从 main 分支复制 deploy 文件到根目录
+                if git show main:"$file" > "$filename" 2>/dev/null; then
+                  echo "Successfully copied $filename from main:$file"
+                else
+                  echo "Failed to get $file from main branch using git show, trying checkout method..."
+                  git checkout main
+                  if [[ -f "$file" ]]; then
+                    cp "$file" "../$filename"
+                    git checkout $BRANCH
+                    mv "../$filename" "$filename"
+                  else
+                    echo "File $file not found in main branch"
+                    git checkout $BRANCH
+                    continue
+                  fi
+                fi
+                
+                # 检查文件是否有变化
+                if git diff --quiet HEAD "$filename" 2>/dev/null; then
+                  echo "Deploy file $filename unchanged."
+                else
+                  echo "Adding deploy file $filename to staging..."
                   git add "$filename"
                   CHANGES_MADE=true
-                else
-                  echo "Deploy file $filename unchanged."
                 fi
               fi
             done
