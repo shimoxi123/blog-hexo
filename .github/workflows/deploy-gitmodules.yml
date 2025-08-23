@@ -94,54 +94,42 @@ jobs:
           echo "Copying files from deploy/ directory to root..."
           DEPLOY_DIR="deploy"
           
-          # 先切换到 main 分支检查 deploy 目录
-          git checkout main
+          # 检查当前暂存区状态
+          echo "Current staging area before deploy files:"
+          git status --porcelain
           
-          if [[ -d "$DEPLOY_DIR" ]]; then
-            echo "Deploy directory found, processing files..."
-            # 获取 deploy 目录中的文件列表
-            DEPLOY_FILES=$(find "$DEPLOY_DIR" -maxdepth 1 -type f)
+          if git ls-tree main:"$DEPLOY_DIR" >/dev/null 2>&1; then
+            echo "Deploy directory found in main branch, processing files..."
             
-            # 切换到目标分支进行操作
-            git checkout $BRANCH
+            # 获取 deploy 目录中的文件列表（不切换分支）
+            DEPLOY_FILES=$(git ls-tree --name-only main:"$DEPLOY_DIR" 2>/dev/null || echo "")
             
-            for file in $DEPLOY_FILES; do
-              filename=$(basename "$file")
+            for filename in $DEPLOY_FILES; do
               echo "Processing deploy file: $filename"
               
               # 从 main 分支复制 deploy 文件到根目录
-              if git show main:"$file" > "$filename" 2>/dev/null; then
-                echo "Successfully copied $filename from main:$file"
-              else
-                echo "Failed to get $file from main branch using git show, trying alternative method..."
-                # 临时切换到 main 分支复制文件
-                git checkout main
-                if [[ -f "$file" ]]; then
-                  cp "$file" "/tmp/$filename"
-                  git checkout $BRANCH
-                  mv "/tmp/$filename" "$filename"
-                  echo "Successfully copied $filename using alternative method"
+              if git show main:"$DEPLOY_DIR/$filename" > "$filename" 2>/dev/null; then
+                echo "Successfully copied $filename from main:$DEPLOY_DIR/$filename"
+                
+                # 检查文件是否有变化
+                if git diff --quiet HEAD "$filename" 2>/dev/null; then
+                  echo "Deploy file $filename unchanged."
                 else
-                  echo "File $file not found in main branch"
-                  git checkout $BRANCH
-                  continue
+                  echo "Adding deploy file $filename to staging..."
+                  git add "$filename"
+                  CHANGES_MADE=true
                 fi
-              fi
-              
-              # 检查文件是否有变化
-              if git diff --quiet HEAD "$filename" 2>/dev/null; then
-                echo "Deploy file $filename unchanged."
               else
-                echo "Adding deploy file $filename to staging..."
-                git add "$filename"
-                CHANGES_MADE=true
+                echo "Failed to get $DEPLOY_DIR/$filename from main branch"
               fi
             done
           else
-            echo "Deploy directory not found, skipping deploy files copy."
-            # 确保切换回目标分支
-            git checkout $BRANCH
+            echo "Deploy directory not found in main branch, skipping deploy files copy."
           fi
+          
+          # 检查最终暂存区状态
+          echo "Current staging area after deploy files:"
+          git status --porcelain
 
           # 确保最后在目标分支上
           git checkout $BRANCH
@@ -149,24 +137,28 @@ jobs:
           # 提交并推送变化
           echo "Final branch check: $(git branch --show-current)"
           echo "Final staging area status:"
-          git status --porcelain
+          STAGED_FILES=$(git status --porcelain)
+          echo "$STAGED_FILES"
           
-          if [[ "$CHANGES_MADE" == true ]]; then
+          # 检查是否真的有文件需要提交
+          if [[ -n "$STAGED_FILES" ]] || [[ "$CHANGES_MADE" == true ]]; then
             # 获取原始提交信息
             ORIGINAL_COMMIT_MSG=$(git log --format=%B -n 1 ${{ github.sha }})
             COMMIT_ID=$(echo ${{ github.sha }} | cut -c1-7)
             
             echo "Committing changes..."
-            git commit -m "${ORIGINAL_COMMIT_MSG} (${COMMIT_ID})"
-            
-            # 尝试推送，如果失败则强制推送
-            echo "Pushing to remote..."
-            if ! git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH; then
-              echo "Normal push failed, trying force push..."
-              git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH
+            if git commit -m "${ORIGINAL_COMMIT_MSG} (${COMMIT_ID})"; then
+              # 尝试推送，如果失败则强制推送
+              echo "Pushing to remote..."
+              if ! git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH; then
+                echo "Normal push failed, trying force push..."
+                git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH
+              fi
+              
+              echo "✅ Changes committed and pushed to $BRANCH branch successfully."
+            else
+              echo "❌ Commit failed - no changes to commit or commit error"
             fi
-            
-            echo "✅ Changes committed and pushed to $BRANCH branch successfully."
           else
             echo "ℹ️ No changes to commit."
           fi
