@@ -43,6 +43,18 @@ pnpm add hexo-plugin-name
 
 # 添加开发依赖
 pnpm add -D package-name
+
+# 添加到工作区根目录（如果需要）
+pnpm add -w package-name
+```
+
+## 故障排除
+
+### Volantis 主题依赖问题
+如果遇到 "Cannot find module 'bluebird'" 错误，这是因为 pnpm 的依赖管理方式导致的。已经通过添加 `bluebird` 依赖解决：
+
+```bash
+pnpm add -w bluebird
 ```
 
 ## 项目结构

@@ -8,9 +8,12 @@ importers:
 
   .:
     dependencies:
+      bluebird:
+        specifier: ^3.7.2
+        version: 3.7.2
       hexo:
         specifier: ^7.3.0
-        version: 7.3.0(chokidar@3.6.0)
+        version: 7.3.0(chokidar@4.0.3)
       hexo-fs:
         specifier: ^5.0.0
         version: 5.0.0
@@ -31,7 +34,7 @@ importers:
         version: 2.0.0
       hexo-offline:
         specifier: ^3.0.0
-        version: 3.0.0(hexo@7.3.0(chokidar@3.6.0))
+        version: 3.0.0(hexo@7.3.0(chokidar@4.0.3))
       hexo-renderer-ejs:
         specifier: ^2.0.0
         version: 2.0.0
@@ -53,6 +56,24 @@ importers:
       stylus:
         specifier: ^0.64.0
         version: 0.64.0
+
+  themes/volantis:
+    dependencies:
+      hexo:
+        specifier: ^7.0.0
+        version: 7.3.0(chokidar@4.0.3)
+      hexo-fs:
+        specifier: ^5.0.0
+        version: 5.0.0
+      hexo-generator-json-content:
+        specifier: ^4.2.3
+        version: 4.2.3
+      hexo-renderer-ejs:
+        specifier: ^2.0.0
+        version: 2.0.0
+      hexo-renderer-stylus:
+        specifier: ^3.0.0
+        version: 3.0.1
 
 packages:
 
@@ -567,8 +588,8 @@ packages:
     resolution: {integrity: sha512-ruv7Ae4J5dUYULmeXw1gmb7rYRz57OWCPM57pHojnLq/3Z1CK2lNSLTCVjxVk1F/TZHwOZZrOWi0ur95BbLxNQ==}
     engines: {node: '>=6.9.0'}
 
-  '@csstools/color-helpers@5.0.2':
-    resolution: {integrity: sha512-JqWH1vsgdGcw2RR6VliXXdA0/59LttzlU8UlRT/iUUsEeWfYq8I+K0yhihEUTTHLRm1EXvpsCx3083EU15ecsA==}
+  '@csstools/color-helpers@5.1.0':
+    resolution: {integrity: sha512-S11EXWJyy0Mz5SYvRmY8nJYTFFd1LCNV+7cXyAgQtOOuzb4EsgfqDufL+9esx72/eLhsRdGZwaldu/h+E4t4BA==}
     engines: {node: '>=18'}
 
   '@csstools/css-calc@2.1.4':
@@ -578,8 +599,8 @@ packages:
       '@csstools/css-parser-algorithms': ^3.0.5
       '@csstools/css-tokenizer': ^3.0.4
 
-  '@csstools/css-color-parser@3.0.10':
-    resolution: {integrity: sha512-TiJ5Ajr6WRd1r8HSiwJvZBiJOqtH86aHpUjq5aEKWHiII2Qfjqd/HCWKPOW8EP4vcspXbHnXrwIDlu5savQipg==}
+  '@csstools/css-color-parser@3.1.0':
+    resolution: {integrity: sha512-nbtKwh3a6xNVIp/VRuXV64yTKnb1IjTAEEh3irzS+HkKjAOYLTGNb9pmVNntZ8iVBHcWDA2Dof0QtPgFI1BaTA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@csstools/css-parser-algorithms': ^3.0.5
@@ -2294,7 +2315,7 @@ snapshots:
   '@asamuzakjp/css-color@3.2.0':
     dependencies:
       '@csstools/css-calc': 2.1.4(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)
-      '@csstools/css-color-parser': 3.0.10(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)
+      '@csstools/css-color-parser': 3.1.0(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
@@ -2953,16 +2974,16 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@csstools/color-helpers@5.0.2': {}
+  '@csstools/color-helpers@5.1.0': {}
 
   '@csstools/css-calc@2.1.4(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)':
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
 
-  '@csstools/css-color-parser@3.0.10(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)':
+  '@csstools/css-color-parser@3.1.0(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)':
     dependencies:
-      '@csstools/color-helpers': 5.0.2
+      '@csstools/color-helpers': 5.1.0
       '@csstools/css-calc': 2.1.4(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
@@ -3703,9 +3724,9 @@ snapshots:
     dependencies:
       picocolors: 1.1.1
 
-  hexo-offline@3.0.0(hexo@7.3.0(chokidar@3.6.0)):
+  hexo-offline@3.0.0(hexo@7.3.0(chokidar@4.0.3)):
     dependencies:
-      hexo: 7.3.0(chokidar@3.6.0)
+      hexo: 7.3.0(chokidar@4.0.3)
       workbox-build: 7.3.0
     transitivePeerDependencies:
       - '@types/babel__core'
@@ -3761,7 +3782,7 @@ snapshots:
       prismjs: 1.30.0
       strip-indent: 3.0.0
 
-  hexo@7.3.0(chokidar@3.6.0):
+  hexo@7.3.0(chokidar@4.0.3):
     dependencies:
       abbrev: 2.0.0
       archy: 1.0.0
@@ -3778,7 +3799,7 @@ snapshots:
       moize: 6.1.6
       moment: 2.30.1
       moment-timezone: 0.5.48
-      nunjucks: 3.2.4(chokidar@3.6.0)
+      nunjucks: 3.2.4(chokidar@4.0.3)
       picocolors: 1.1.1
       pretty-hrtime: 1.0.3
       resolve: 1.22.10
@@ -4155,13 +4176,13 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
-  nunjucks@3.2.4(chokidar@3.6.0):
+  nunjucks@3.2.4(chokidar@4.0.3):
     dependencies:
       a-sync-waterfall: 1.0.1
       asap: 2.0.6
       commander: 5.1.0
     optionalDependencies:
-      chokidar: 3.6.0
+      chokidar: 4.0.3
 
   nwsapi@2.2.21: {}
 
