@@ -1,0 +1,12 @@
+# Cloudflare Pages configuration
+name = "shimoxi-blog"
+compatibility_date = "2024-01-01"
+
+[build]
+command = "npm run build:cf"
+cwd = "."
+watch_dir = "source"
+
+[build.environment_variables]
+TZ = "Asia/Shanghai"
+NODE_ENV = "production"
