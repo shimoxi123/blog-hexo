@@ -41,21 +41,62 @@ jobs:
           echo "Submodule: $SUBMODULE_PATH"
           echo "Target branch: $TARGET_BRANCH"
           
+          # 显示当前状态
+          echo "Current directory contents:"
+          ls -la
+          echo "Git status:"
+          git status
+          echo "Submodule status:"
+          git submodule status || echo "No submodules found"
+          
+          # 检查 .gitmodules 文件
+          if [[ -f ".gitmodules" ]]; then
+            echo ".gitmodules content:"
+            cat .gitmodules
+          else
+            echo "No .gitmodules file found"
+          fi
+          
+          # 初始化子模块（如果需要）
+          if [[ -f ".gitmodules" ]]; then
+            echo "Initializing submodules..."
+            git submodule update --init --recursive
+          fi
+          
+          # 检查子模块目录是否存在
           if [[ -d "$SUBMODULE_PATH" ]]; then
-            echo "Updating submodule $SUBMODULE_PATH to $TARGET_BRANCH..."
+            echo "Submodule directory found: $SUBMODULE_PATH"
             
+            # 进入子模块目录
             cd "$SUBMODULE_PATH"
-            git fetch origin "$TARGET_BRANCH"
-            git checkout "$TARGET_BRANCH"
-            git pull origin "$TARGET_BRANCH"
+            echo "Current submodule branch: $(git branch --show-current)"
+            echo "Available remote branches:"
+            git branch -r
+            
+            # 获取最新的远程分支信息
+            git fetch origin
+            
+            # 切换到目标分支
+            if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" >/dev/null 2>&1; then
+              echo "Switching to $TARGET_BRANCH branch..."
+              git checkout "$TARGET_BRANCH" || git checkout -b "$TARGET_BRANCH" "origin/$TARGET_BRANCH"
+              git pull origin "$TARGET_BRANCH"
+              echo "Successfully updated to $TARGET_BRANCH"
+            else
+              echo "Target branch $TARGET_BRANCH not found in remote"
+            fi
+            
             cd ..
             
-            # 检查子模块是否有更新
-            if git diff --quiet HEAD "$SUBMODULE_PATH"; then
-              echo "Submodule reference unchanged."
+            # 检查子模块引用是否有变化
+            echo "Checking for submodule changes..."
+            git status --porcelain
+            
+            if git diff --cached --quiet && git diff --quiet; then
+              echo "No changes to commit."
             else
-              echo "Submodule reference updated, committing..."
-              git add "$SUBMODULE_PATH"
+              echo "Changes detected, committing..."
+              git add .
               git commit -m "Update $SUBMODULE_PATH to latest $TARGET_BRANCH"
               
               # 推送更新
@@ -63,5 +104,7 @@ jobs:
               echo "✅ Submodule reference updated successfully."
             fi
           else
-            echo "❌ Submodule path $SUBMODULE_PATH not found."
+            echo "❌ Submodule directory $SUBMODULE_PATH not found."
+            echo "Available directories:"
+            find . -maxdepth 2 -type d -name "*volantis*" || echo "No volantis directories found"
           fi
