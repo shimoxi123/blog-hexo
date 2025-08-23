@@ -122,6 +122,12 @@ jobs:
               if git show main:"$DEPLOY_DIR/$filename" > "$filename" 2>/dev/null; then
                 echo "Successfully copied $filename from main:$DEPLOY_DIR/$filename"
                 
+                # 特殊处理 .gitmodules 文件
+                if [[ "$filename" == ".gitmodules" ]]; then
+                  echo "Updated .gitmodules content:"
+                  cat "$filename"
+                fi
+                
                 # 检查文件是否有变化
                 if git diff --quiet HEAD "$filename" 2>/dev/null; then
                   echo "Deploy file $filename unchanged."
@@ -147,6 +153,10 @@ jobs:
           if [[ -f ".gitmodules" ]]; then
             echo "Current .gitmodules content:"
             cat .gitmodules
+            
+            # 同步子模块配置（重要：这会更新子模块的 URL 和分支配置）
+            echo "Syncing submodule configuration..."
+            git submodule sync --recursive
             
             # 初始化子模块（如果还没有初始化）
             echo "Initializing submodules..."
@@ -180,7 +190,19 @@ jobs:
               git add themes/volantis
               CHANGES_MADE=true
             else
-              echo "Submodule directory not found, this might be expected for EdgeOne-Pages branch"
+              echo "Submodule directory not found, reinitializing..."
+              # 如果子模块目录不存在，重新初始化
+              git submodule update --init --recursive
+              if [[ -d "themes/volantis" ]]; then
+                cd themes/volantis
+                if git ls-remote --exit-code --heads origin EdgeOne-Pages >/dev/null 2>&1; then
+                  git checkout EdgeOne-Pages || git checkout -b EdgeOne-Pages origin/EdgeOne-Pages
+                  git pull origin EdgeOne-Pages
+                fi
+                cd ../..
+                git add themes/volantis
+                CHANGES_MADE=true
+              fi
             fi
           else
             echo "No .gitmodules file found"
