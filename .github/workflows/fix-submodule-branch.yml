@@ -1,0 +1,100 @@
+name: Fix EdgeOne-Pages Submodule Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update submodule configuration'
+        required: false
+        default: 'true'
+        type: boolean
+
+jobs:
+  fix-submodule:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1️⃣ 检出 EdgeOne-Pages 分支
+      - name: Checkout EdgeOne-Pages branch
+        uses: actions/checkout@v3
+        with:
+          ref: EdgeOne-Pages
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_TOKEN }}
+
+      # 2️⃣ 设置 Git 用户
+      - name: Set up Git
+        run: |
+          git config user.name "shimoxijimu-actions"
+          git config user.email "shimoxijimu@users.noreply.github.com"
+
+      # 3️⃣ 修复子模块配置
+      - name: Fix submodule configuration
+        run: |
+          echo "Current branch: $(git branch --show-current)"
+          
+          # 显示当前 .gitmodules 内容
+          echo "Current .gitmodules content:"
+          cat .gitmodules || echo "No .gitmodules file found"
+          
+          # 从 main 分支复制正确的 deploy/.gitmodules 到根目录
+          echo "Copying deploy/.gitmodules from main branch..."
+          if git show main:deploy/.gitmodules > .gitmodules 2>/dev/null; then
+            echo "Successfully copied deploy/.gitmodules"
+            echo "New .gitmodules content:"
+            cat .gitmodules
+          else
+            echo "Failed to copy deploy/.gitmodules from main branch"
+            exit 1
+          fi
+          
+          # 同步子模块配置
+          echo "Syncing submodule configuration..."
+          git submodule sync --recursive
+          
+          # 删除现有子模块目录（如果存在）
+          if [[ -d "themes/volantis" ]]; then
+            echo "Removing existing submodule directory..."
+            rm -rf themes/volantis
+          fi
+          
+          # 重新初始化子模块
+          echo "Re-initializing submodule..."
+          git submodule update --init --recursive
+          
+          # 进入子模块目录并切换到 EdgeOne-Pages 分支
+          if [[ -d "themes/volantis" ]]; then
+            cd themes/volantis
+            echo "Current submodule branch: $(git branch --show-current)"
+            echo "Available remote branches:"
+            git branch -r
+            
+            # 切换到 EdgeOne-Pages 分支
+            if git ls-remote --exit-code --heads origin EdgeOne-Pages >/dev/null 2>&1; then
+              echo "Switching to EdgeOne-Pages branch..."
+              git checkout EdgeOne-Pages || git checkout -b EdgeOne-Pages origin/EdgeOne-Pages
+              git pull origin EdgeOne-Pages
+              echo "Successfully switched to EdgeOne-Pages branch"
+            else
+              echo "EdgeOne-Pages branch not found in submodule"
+            fi
+            
+            cd ..
+          fi
+          
+          # 检查是否有变化需要提交
+          echo "Checking for changes..."
+          git status --porcelain
+          
+          if git diff --cached --quiet && git diff --quiet; then
+            echo "No changes to commit."
+          else
+            echo "Changes detected, committing..."
+            git add .
+            git commit -m "Fix submodule configuration to use EdgeOne-Pages branch"
+            
+            # 推送变更
+            echo "Pushing changes..."
+            git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+            echo "✅ Submodule configuration fixed successfully."
+          fi

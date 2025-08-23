@@ -59,6 +59,8 @@ jobs:
           
           # 初始化子模块（如果需要）
           if [[ -f ".gitmodules" ]]; then
+            echo "Syncing submodule configuration..."
+            git submodule sync --recursive
             echo "Initializing submodules..."
             git submodule update --init --recursive
           fi
