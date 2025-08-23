@@ -34,7 +34,17 @@ jobs:
             exit 0
           fi
           
+          echo "Starting deployment process..."
           BRANCH="EdgeOne-Pages"
+
+          # 检查源文件是否存在
+          SRC="deploy/.gitmodules"
+          if [[ ! -f "$SRC" ]]; then
+            echo "Error: Source file $SRC not found."
+            exit 1
+          fi
+          
+          echo "Source file $SRC found, proceeding..."
 
           # 检查远程分支是否存在
           if git ls-remote --exit-code --heads origin $BRANCH >/dev/null 2>&1; then
@@ -46,28 +56,34 @@ jobs:
             git checkout -b $BRANCH
           fi
 
-          # 同步 .gitmodules 文件
-          SRC="deploy/.gitmodules"
-          DEST=".gitmodules"
+          # 显示当前分支
+          echo "Current branch: $(git branch --show-current)"
 
-          if [[ -f "$SRC" ]]; then
-            if ! cmp -s "$SRC" "$DEST" 2>/dev/null; then
-              echo "Updating $DEST from $SRC..."
-              cp "$SRC" "$DEST"
-              git add "$DEST"
+          # 同步 .gitmodules 文件
+          DEST=".gitmodules"
+          
+          echo "Comparing files..."
+          if ! cmp -s "$SRC" "$DEST" 2>/dev/null; then
+            echo "Files are different, updating $DEST from $SRC..."
+            cp "$SRC" "$DEST"
+            git add "$DEST"
+            
+            # 检查是否有变化需要提交
+            if git diff --cached --quiet; then
+              echo "No changes to commit after adding file."
+            else
+              echo "Committing changes..."
               git commit -m "Update .gitmodules from main branch"
               
               # 尝试推送，如果失败则强制推送
+              echo "Pushing to remote..."
               if ! git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH; then
                 echo "Normal push failed, trying force push..."
                 git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH
               fi
               
               echo "Changes committed and pushed to $BRANCH branch."
-            else
-              echo "$DEST unchanged, no update needed."
             fi
           else
-            echo "Error: Source file $SRC not found."
-            exit 1
+            echo "Files are identical, no update needed."
           fi
