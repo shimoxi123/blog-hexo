@@ -7,3 +7,6 @@ public/
 .deploy*/
 _multiconfig.yml
 source/_posts/1test.md
+.env
+.env.local
+.env.*.local
