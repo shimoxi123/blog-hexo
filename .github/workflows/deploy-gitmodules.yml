@@ -1,0 +1,73 @@
+name: Deploy GitModules to EdgeOne-Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'deploy/.gitmodules'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ 检出仓库
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2️⃣ 设置 Git 用户
+      - name: Set up Git
+        run: |
+          git config user.name "shimoxijimu-actions"
+          git config user.email "shimoxijimu@users.noreply.github.com"
+
+      # 3️⃣ 部署 .gitmodules 到 EdgeOne-Pages
+      - name: Deploy .gitmodules to EdgeOne-Pages
+        run: |
+          # 检查是否有 PERSONAL_TOKEN
+          if [[ -z "${{ secrets.PERSONAL_TOKEN }}" ]]; then
+            echo "Warning: PERSONAL_TOKEN not found. Please set PERSONAL_TOKEN in repository secrets to enable deployment."
+            echo "Skipping deployment..."
+            exit 0
+          fi
+          
+          BRANCH="EdgeOne-Pages"
+
+          # 检查远程分支是否存在
+          if git ls-remote --exit-code --heads origin $BRANCH >/dev/null 2>&1; then
+            echo "Remote branch $BRANCH exists, fetching..."
+            git fetch origin $BRANCH
+            git checkout -B $BRANCH origin/$BRANCH
+          else
+            echo "Remote branch $BRANCH does not exist, creating new branch..."
+            git checkout -b $BRANCH
+          fi
+
+          # 同步 .gitmodules 文件
+          SRC="deploy/.gitmodules"
+          DEST=".gitmodules"
+
+          if [[ -f "$SRC" ]]; then
+            if ! cmp -s "$SRC" "$DEST" 2>/dev/null; then
+              echo "Updating $DEST from $SRC..."
+              cp "$SRC" "$DEST"
+              git add "$DEST"
+              git commit -m "Update .gitmodules from main branch"
+              
+              # 尝试推送，如果失败则强制推送
+              if ! git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH; then
+                echo "Normal push failed, trying force push..."
+                git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH
+              fi
+              
+              echo "Changes committed and pushed to $BRANCH branch."
+            else
+              echo "$DEST unchanged, no update needed."
+            fi
+          else
+            echo "Error: Source file $SRC not found."
+            exit 1
+          fi
