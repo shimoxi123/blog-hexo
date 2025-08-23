@@ -99,8 +99,13 @@ jobs:
               git add .
               git commit -m "Update $SUBMODULE_PATH to latest $TARGET_BRANCH"
               
-              # 推送更新
-              git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+              # 推送更新，处理并发冲突
+              echo "Pushing changes..."
+              if ! git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages; then
+                echo "Push failed, trying to rebase and retry..."
+                git pull --rebase https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+                git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+              fi
               echo "✅ Submodule reference updated successfully."
             fi
           else
