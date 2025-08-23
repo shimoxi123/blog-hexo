@@ -1,0 +1,67 @@
+name: Update Submodule Reference
+
+on:
+  repository_dispatch:
+    types: [submodule-updated]
+
+jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1️⃣ 检出仓库
+      - name: Checkout EdgeOne-Pages branch
+        uses: actions/checkout@v3
+        with:
+          ref: EdgeOne-Pages
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          submodules: true
+
+      # 2️⃣ 设置 Git 用户
+      - name: Set up Git
+        run: |
+          git config user.name "shimoxijimu-actions"
+          git config user.email "shimoxijimu@users.noreply.github.com"
+
+      # 3️⃣ 更新子模块引用
+      - name: Update submodule reference
+        run: |
+          # 检查是否有 PERSONAL_TOKEN
+          if [[ -z "${{ secrets.PERSONAL_TOKEN }}" ]]; then
+            echo "Warning: PERSONAL_TOKEN not found. Please set PERSONAL_TOKEN in repository secrets to enable deployment."
+            echo "Skipping deployment..."
+            exit 0
+          fi
+          
+          echo "Updating submodule reference..."
+          SUBMODULE_PATH="${{ github.event.client_payload.submodule }}"
+          TARGET_BRANCH="${{ github.event.client_payload.branch }}"
+          
+          echo "Submodule: $SUBMODULE_PATH"
+          echo "Target branch: $TARGET_BRANCH"
+          
+          if [[ -d "$SUBMODULE_PATH" ]]; then
+            echo "Updating submodule $SUBMODULE_PATH to $TARGET_BRANCH..."
+            
+            cd "$SUBMODULE_PATH"
+            git fetch origin "$TARGET_BRANCH"
+            git checkout "$TARGET_BRANCH"
+            git pull origin "$TARGET_BRANCH"
+            cd ..
+            
+            # 检查子模块是否有更新
+            if git diff --quiet HEAD "$SUBMODULE_PATH"; then
+              echo "Submodule reference unchanged."
+            else
+              echo "Submodule reference updated, committing..."
+              git add "$SUBMODULE_PATH"
+              git commit -m "Update $SUBMODULE_PATH to latest $TARGET_BRANCH"
+              
+              # 推送更新
+              git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+              echo "✅ Submodule reference updated successfully."
+            fi
+          else
+            echo "❌ Submodule path $SUBMODULE_PATH not found."
+          fi
