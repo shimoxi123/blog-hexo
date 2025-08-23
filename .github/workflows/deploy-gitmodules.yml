@@ -94,54 +94,70 @@ jobs:
           echo "Copying files from deploy/ directory to root..."
           DEPLOY_DIR="deploy"
           
-          # 确保我们在 main 分支上获取 deploy 文件
+          # 先切换到 main 分支检查 deploy 目录
           git checkout main
           
           if [[ -d "$DEPLOY_DIR" ]]; then
             echo "Deploy directory found, processing files..."
-            for file in "$DEPLOY_DIR"/*; do
-              if [[ -f "$file" ]]; then
-                filename=$(basename "$file")
-                echo "Processing deploy file: $filename"
-                
-                # 切换到目标分支
-                git checkout $BRANCH
-                
-                # 从 main 分支复制 deploy 文件到根目录
-                if git show main:"$file" > "$filename" 2>/dev/null; then
-                  echo "Successfully copied $filename from main:$file"
+            # 获取 deploy 目录中的文件列表
+            DEPLOY_FILES=$(find "$DEPLOY_DIR" -maxdepth 1 -type f)
+            
+            # 切换到目标分支进行操作
+            git checkout $BRANCH
+            
+            for file in $DEPLOY_FILES; do
+              filename=$(basename "$file")
+              echo "Processing deploy file: $filename"
+              
+              # 从 main 分支复制 deploy 文件到根目录
+              if git show main:"$file" > "$filename" 2>/dev/null; then
+                echo "Successfully copied $filename from main:$file"
+              else
+                echo "Failed to get $file from main branch using git show, trying alternative method..."
+                # 临时切换到 main 分支复制文件
+                git checkout main
+                if [[ -f "$file" ]]; then
+                  cp "$file" "/tmp/$filename"
+                  git checkout $BRANCH
+                  mv "/tmp/$filename" "$filename"
+                  echo "Successfully copied $filename using alternative method"
                 else
-                  echo "Failed to get $file from main branch using git show, trying checkout method..."
-                  git checkout main
-                  if [[ -f "$file" ]]; then
-                    cp "$file" "../$filename"
-                    git checkout $BRANCH
-                    mv "../$filename" "$filename"
-                  else
-                    echo "File $file not found in main branch"
-                    git checkout $BRANCH
-                    continue
-                  fi
+                  echo "File $file not found in main branch"
+                  git checkout $BRANCH
+                  continue
                 fi
-                
-                # 检查文件是否有变化
-                if git diff --quiet HEAD "$filename" 2>/dev/null; then
-                  echo "Deploy file $filename unchanged."
-                else
-                  echo "Adding deploy file $filename to staging..."
-                  git add "$filename"
-                  CHANGES_MADE=true
-                fi
+              fi
+              
+              # 检查文件是否有变化
+              if git diff --quiet HEAD "$filename" 2>/dev/null; then
+                echo "Deploy file $filename unchanged."
+              else
+                echo "Adding deploy file $filename to staging..."
+                git add "$filename"
+                CHANGES_MADE=true
               fi
             done
           else
             echo "Deploy directory not found, skipping deploy files copy."
+            # 确保切换回目标分支
+            git checkout $BRANCH
           fi
 
+          # 确保最后在目标分支上
+          git checkout $BRANCH
+
           # 提交并推送变化
+          echo "Final branch check: $(git branch --show-current)"
+          echo "Final staging area status:"
+          git status --porcelain
+          
           if [[ "$CHANGES_MADE" == true ]]; then
+            # 获取原始提交信息
+            ORIGINAL_COMMIT_MSG=$(git log --format=%B -n 1 ${{ github.sha }})
+            COMMIT_ID=$(echo ${{ github.sha }} | cut -c1-7)
+            
             echo "Committing changes..."
-            git commit -m "Sync changes from main branch and deploy files ($(echo ${{ github.sha }} | cut -c1-7))"
+            git commit -m "${ORIGINAL_COMMIT_MSG} (${COMMIT_ID})"
             
             # 尝试推送，如果失败则强制推送
             echo "Pushing to remote..."
@@ -150,7 +166,9 @@ jobs:
               git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} $BRANCH
             fi
             
-            echo "Changes committed and pushed to $BRANCH branch."
+            echo "✅ Changes committed and pushed to $BRANCH branch successfully."
           else
-            echo "No changes to commit."
+            echo "ℹ️ No changes to commit."
           fi
+          
+          echo "🎉 Sync process completed!"
