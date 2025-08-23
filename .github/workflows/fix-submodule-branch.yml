@@ -80,6 +80,11 @@ jobs:
             fi
             
             cd ..
+            
+            # 确保子模块配置为跟踪分支
+            echo "Configuring submodule to track EdgeOne-Pages branch..."
+            git config -f .gitmodules submodule.themes/volantis.branch EdgeOne-Pages
+            git submodule set-branch --branch EdgeOne-Pages themes/volantis
           fi
           
           # 检查是否有变化需要提交
