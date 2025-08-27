@@ -1,31 +1,40 @@
-name: Update Submodule Reference
+name: Sync Main to EdgeOne-Pages
 
 on:
-  repository_dispatch:
-    types: [submodule-updated]
+  push:
+    branches: [main]
 
 jobs:
-  update-submodule:
+  sync-to-edgeone:
     runs-on: ubuntu-latest
     
     steps:
-      # 1️⃣ 检出仓库
-      - name: Checkout EdgeOne-Pages branch
+      # 1️⃣ 检出 main 分支
+      - name: Checkout main branch
         uses: actions/checkout@v3
         with:
-          ref: EdgeOne-Pages
+          ref: main
           fetch-depth: 0
           token: ${{ secrets.PERSONAL_TOKEN }}
-          submodules: true
 
-      # 2️⃣ 设置 Git 用户
+      # 2️⃣ 获取最新提交信息
+      - name: Get latest commit info
+        id: commit_info
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+          COMMIT_ID=$(git log -1 --pretty=format:"%h")
+          echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+          echo "commit_id=$COMMIT_ID" >> $GITHUB_OUTPUT
+          echo "Latest commit: $COMMIT_MESSAGE ($COMMIT_ID)"
+
+      # 3️⃣ 设置 Git 用户
       - name: Set up Git
         run: |
           git config user.name "shimoxijimu-actions"
           git config user.email "shimoxijimu@users.noreply.github.com"
 
-      # 3️⃣ 更新子模块引用
-      - name: Update submodule reference
+      # 4️⃣ 同步到 EdgeOne-Pages 分支
+      - name: Sync to EdgeOne-Pages branch
         run: |
           # 检查是否有 PERSONAL_TOKEN
           if [[ -z "${{ secrets.PERSONAL_TOKEN }}" ]]; then
@@ -34,84 +43,64 @@ jobs:
             exit 0
           fi
           
-          echo "Updating submodule reference..."
-          SUBMODULE_PATH="${{ github.event.client_payload.submodule }}"
-          TARGET_BRANCH="${{ github.event.client_payload.branch }}"
+          echo "Syncing main branch to EdgeOne-Pages..."
           
-          echo "Submodule: $SUBMODULE_PATH"
-          echo "Target branch: $TARGET_BRANCH"
-          
-          # 显示当前状态
-          echo "Current directory contents:"
-          ls -la
-          echo "Git status:"
-          git status
-          echo "Submodule status:"
-          git submodule status || echo "No submodules found"
-          
-          # 检查 .gitmodules 文件
-          if [[ -f ".gitmodules" ]]; then
-            echo ".gitmodules content:"
-            cat .gitmodules
+          # 检查 EdgeOne-Pages 分支是否存在
+          if git ls-remote --exit-code --heads origin EdgeOne-Pages >/dev/null 2>&1; then
+            echo "EdgeOne-Pages branch exists, checking out..."
+            git fetch origin EdgeOne-Pages
+            git checkout EdgeOne-Pages
           else
-            echo "No .gitmodules file found"
+            echo "EdgeOne-Pages branch does not exist, creating..."
+            git checkout -b EdgeOne-Pages
           fi
           
-          # 初始化子模块（如果需要）
-          if [[ -f ".gitmodules" ]]; then
-            echo "Syncing submodule configuration..."
-            git submodule sync --recursive
-            echo "Initializing submodules..."
-            git submodule update --init --recursive
-          fi
+          # 合并 main 分支的内容
+          echo "Merging main branch content..."
+          git merge origin/main --no-edit
           
-          # 检查子模块目录是否存在
-          if [[ -d "$SUBMODULE_PATH" ]]; then
-            echo "Submodule directory found: $SUBMODULE_PATH"
+          # 5️⃣ 复制 deploy 文件夹内容到根目录
+          echo "Copying deploy folder contents to root directory..."
+          if [[ -d "deploy" ]]; then
+            echo "Deploy folder found, copying contents..."
             
-            # 进入子模块目录
-            cd "$SUBMODULE_PATH"
-            echo "Current submodule branch: $(git branch --show-current)"
-            echo "Available remote branches:"
-            git branch -r
+            # 显示 deploy 文件夹内容
+            echo "Deploy folder contents:"
+            ls -la deploy/
             
-            # 获取最新的远程分支信息
-            git fetch origin
+            # 复制所有文件和文件夹，覆盖现有文件
+            cp -rf deploy/* ./
+            cp -rf deploy/.* ./ 2>/dev/null || true  # 复制隐藏文件，忽略错误
             
-            # 切换到目标分支
-            if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" >/dev/null 2>&1; then
-              echo "Switching to $TARGET_BRANCH branch..."
-              git checkout "$TARGET_BRANCH" || git checkout -b "$TARGET_BRANCH" "origin/$TARGET_BRANCH"
-              git pull origin "$TARGET_BRANCH"
-              echo "Successfully updated to $TARGET_BRANCH"
+            echo "Files copied successfully"
+            echo "Root directory contents after copy:"
+            ls -la
+            
+            # 添加所有更改
+            git add .
+            
+            # 检查是否有变更需要提交
+            if git diff --cached --quiet; then
+              echo "No changes to commit after copying deploy files."
             else
-              echo "Target branch $TARGET_BRANCH not found in remote"
+              echo "Changes detected, committing..."
+              git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})"
+              
+              # 推送更新
+              echo "Pushing changes to EdgeOne-Pages..."
+              git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+              echo "✅ Successfully synced main to EdgeOne-Pages and copied deploy files."
             fi
+          else
+            echo "Deploy folder not found, only syncing main branch content..."
             
-            cd ..
-            
-            # 检查子模块引用是否有变化
-            echo "Checking for submodule changes..."
-            git status --porcelain
-            
+            # 检查是否有变更需要提交
             if git diff --cached --quiet && git diff --quiet; then
               echo "No changes to commit."
             else
-              echo "Changes detected, committing..."
               git add .
-              git commit -m "Update $SUBMODULE_PATH to latest $TARGET_BRANCH"
-              
-              # 推送更新，处理并发冲突
-              echo "Pushing changes..."
-              if ! git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages; then
-                echo "Push failed, trying to rebase and retry..."
-                git pull --rebase https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
-                git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
-              fi
-              echo "✅ Submodule reference updated successfully."
+              git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})"
+              git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+              echo "✅ Successfully synced main to EdgeOne-Pages."
             fi
-          else
-            echo "❌ Submodule directory $SUBMODULE_PATH not found."
-            echo "Available directories:"
-            find . -maxdepth 2 -type d -name "*volantis*" || echo "No volantis directories found"
           fi
