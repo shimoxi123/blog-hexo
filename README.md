@@ -1,6 +1,6 @@
 # Hexo Blog
 
-这是一个使用 Hexo 和 Volantis 主题的博客项目。
+这是一个使用 [Hexo](https://github.com/hexojs/hexo) 和 [Volantis](https://github.com/volantis-x/hexo-theme-volantis) 主题的博客项目。
 
 ## 环境要求
 
