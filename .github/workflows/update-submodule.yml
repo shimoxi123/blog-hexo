@@ -96,9 +96,9 @@ jobs:
               echo "Changes detected, committing..."
               git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})"
               
-              # 推送更新
-              echo "Pushing changes to EdgeOne-Pages..."
-              git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+              # 强制推送更新
+              echo "Force pushing changes to EdgeOne-Pages..."
+              git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
               echo "✅ Successfully synced main to EdgeOne-Pages and copied deploy files."
             fi
           else
@@ -110,7 +110,7 @@ jobs:
             else
               git add .
               git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})"
-              git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+              git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
               echo "✅ Successfully synced main to EdgeOne-Pages."
             fi
           fi
