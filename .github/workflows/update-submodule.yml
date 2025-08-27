@@ -33,8 +33,8 @@ jobs:
           git config user.name "shimoxijimu-actions"
           git config user.email "shimoxijimu@users.noreply.github.com"
 
-      # 4️⃣ 同步到 EdgeOne-Pages 分支
-      - name: Sync to EdgeOne-Pages branch
+      # 4️⃣ 强制同步到 EdgeOne-Pages 分支
+      - name: Force sync to EdgeOne-Pages branch
         run: |
           # 检查是否有 PERSONAL_TOKEN
           if [[ -z "${{ secrets.PERSONAL_TOKEN }}" ]]; then
@@ -43,74 +43,45 @@ jobs:
             exit 0
           fi
           
-          echo "Syncing main branch to EdgeOne-Pages..."
+          echo "🔄 强制同步 → 直接将 EdgeOne-Pages 分支重置为 main 分支的完全副本"
           
-          # 检查 EdgeOne-Pages 分支是否存在
-          if git ls-remote --exit-code --heads origin EdgeOne-Pages >/dev/null 2>&1; then
-            echo "EdgeOne-Pages branch exists, checking out..."
-            git fetch origin EdgeOne-Pages
-            git checkout EdgeOne-Pages
-          else
-            echo "EdgeOne-Pages branch does not exist, creating..."
-            git checkout -b EdgeOne-Pages
-          fi
+          # 直接重置 EdgeOne-Pages 分支为 main 分支的完全副本
+          git checkout -B EdgeOne-Pages origin/main
+          echo "✅ EdgeOne-Pages 分支已重置为 main 分支的完全副本"
           
-          # 强制合并 main 分支的内容
-          echo "Force merging main branch content..."
-          
-          # 使用 -X theirs 策略强制接受 main 分支的更改
-          if ! git merge origin/main -X theirs --no-edit; then
-            echo "Standard merge failed, using reset strategy..."
-            
-            # 如果合并仍然失败，直接重置到 main 分支状态
-            git reset --hard origin/main
-            echo "Force reset to main branch completed"
-          else
-            echo "Force merge completed successfully"
-          fi
-          
-          # 5️⃣ 复制 deploy 文件夹内容到根目录
-          echo "Copying deploy folder contents to root directory..."
+          # 5️⃣ 复制部署文件 → 将 deploy/ 目录的文件复制到根目录
+          echo "📁 复制部署文件 → 将 deploy/ 目录的文件复制到根目录"
           if [[ -d "deploy" ]]; then
-            echo "Deploy folder found, copying contents..."
+            echo "Deploy 文件夹找到，开始复制内容..."
             
             # 显示 deploy 文件夹内容
-            echo "Deploy folder contents:"
+            echo "Deploy 文件夹内容:"
             ls -la deploy/
             
             # 复制所有文件和文件夹，覆盖现有文件
             cp -rf deploy/* ./
             cp -rf deploy/.* ./ 2>/dev/null || true  # 复制隐藏文件，忽略错误
             
-            echo "Files copied successfully"
-            echo "Root directory contents after copy:"
+            echo "✅ 文件复制成功"
+            echo "根目录内容 (复制后):"
             ls -la
             
             # 添加所有更改
             git add .
             
-            # 检查是否有变更需要提交
-            if git diff --cached --quiet; then
-              echo "No changes to commit after copying deploy files."
-            else
-              echo "Changes detected, committing..."
-              git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})"
-              
-              # 强制推送更新
-              echo "Force pushing changes to EdgeOne-Pages..."
-              git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
-              echo "✅ Successfully synced main to EdgeOne-Pages and copied deploy files."
-            fi
-          else
-            echo "Deploy folder not found, only syncing main branch content..."
+            # 提交更改
+            echo "提交更改..."
+            git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})"
             
-            # 检查是否有变更需要提交
-            if git diff --cached --quiet && git diff --quiet; then
-              echo "No changes to commit."
-            else
-              git add .
-              git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})"
-              git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
-              echo "✅ Successfully synced main to EdgeOne-Pages."
-            fi
+            # 6️⃣ 强制推送 → 强制推送所有变更，覆盖远程分支历史
+            echo "🚀 强制推送 → 强制推送所有变更，覆盖远程分支历史"
+            git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+            echo "✅ 成功强制同步 main 到 EdgeOne-Pages 并复制部署文件"
+          else
+            echo "⚠️ Deploy 文件夹未找到，仅同步 main 分支内容"
+            
+            # 直接强制推送重置后的分支
+            echo "🚀 强制推送 → 推送重置后的分支"
+            git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
+            echo "✅ 成功强制同步 main 到 EdgeOne-Pages"
           fi
