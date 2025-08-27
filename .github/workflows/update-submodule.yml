@@ -55,9 +55,19 @@ jobs:
             git checkout -b EdgeOne-Pages
           fi
           
-          # 合并 main 分支的内容
-          echo "Merging main branch content..."
-          git merge origin/main --no-edit
+          # 强制合并 main 分支的内容
+          echo "Force merging main branch content..."
+          
+          # 使用 -X theirs 策略强制接受 main 分支的更改
+          if ! git merge origin/main -X theirs --no-edit; then
+            echo "Standard merge failed, using reset strategy..."
+            
+            # 如果合并仍然失败，直接重置到 main 分支状态
+            git reset --hard origin/main
+            echo "Force reset to main branch completed"
+          else
+            echo "Force merge completed successfully"
+          fi
           
           # 5️⃣ 复制 deploy 文件夹内容到根目录
           echo "Copying deploy folder contents to root directory..."
