@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(npm install hexo-fs hexo-util stylus)"
-    ],
-    "deny": [],
-    "ask": []
-  }
-}
