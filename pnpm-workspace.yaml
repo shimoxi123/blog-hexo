@@ -1,3 +1,6 @@
 packages:
-  - '.'
-  - 'themes/*'
+  - .
+  - themes/*
+
+onlyBuiltDependencies:
+  - hexo-util

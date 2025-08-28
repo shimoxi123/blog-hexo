@@ -13,7 +13,7 @@ importers:
         version: 3.7.2
       hexo:
         specifier: ^7.3.0
-        version: 7.3.0(chokidar@4.0.3)
+        version: 7.3.0(chokidar@3.6.0)
       hexo-fs:
         specifier: ^5.0.0
         version: 5.0.0
@@ -32,9 +32,12 @@ importers:
       hexo-generator-tag:
         specifier: ^2.0.0
         version: 2.0.0
+      hexo-helper-qrcode:
+        specifier: ^1.0.2
+        version: 1.0.2
       hexo-offline:
         specifier: ^3.0.0
-        version: 3.0.0(hexo@7.3.0(chokidar@4.0.3))
+        version: 3.0.0(hexo@7.3.0(chokidar@3.6.0))
       hexo-renderer-ejs:
         specifier: ^2.0.0
         version: 2.0.0
@@ -61,7 +64,7 @@ importers:
     dependencies:
       hexo:
         specifier: ^7.0.0
-        version: 7.3.0(chokidar@4.0.3)
+        version: 7.3.0(chokidar@3.6.0)
       hexo-fs:
         specifier: ^5.0.0
         version: 5.0.0
@@ -1012,8 +1015,8 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  electron-to-chromium@1.5.208:
-    resolution: {integrity: sha512-ozZyibehoe7tOhNaf16lKmljVf+3npZcJIEbJRVftVsmAg5TeA1mGS9dVCZzOwr2xT7xK15V0p7+GZqSPgkuPg==}
+  electron-to-chromium@1.5.211:
+    resolution: {integrity: sha512-IGBvimJkotaLzFnwIVgW9/UD/AOJ2tByUmeOrtqBfACSbAw5b1G0XpvdaieKyc7ULmbwXVx+4e4Be8pOPBrYkw==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1096,8 +1099,8 @@ packages:
   fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
 
-  fast-uri@3.0.6:
-    resolution: {integrity: sha512-Atfo14OibSv5wAp4VWNsFYE1AchQRTv9cBGWET4pZWHzYshFSS9NQI6I57rdKn9croWVMbYFbLhJ+yJvmZIIHw==}
+  fast-uri@3.1.0:
+    resolution: {integrity: sha512-iPeeDKJSWf4IEOasVVrknXpaBV0IApz/gp7S2bb7Z4Lljbl2MGJRqInZiUrQwV16cpzw/D3S5j5Julj/gT52AA==}
 
   filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
@@ -1248,6 +1251,9 @@ packages:
   hexo-generator-tag@2.0.0:
     resolution: {integrity: sha512-1px/hF3veEohWDN8jjzchQhaiz+uOStUvvMaBJC9vWOlALh30UFcapL8IrvAwwJZjFRVA+WqGgDRqoQ8+yaaFw==}
     engines: {node: '>=14'}
+
+  hexo-helper-qrcode@1.0.2:
+    resolution: {integrity: sha512-/cGrNPVhR4DolCg6YTd4jrrAyBgfLZW3xh+3RlWgpJikMjD/xUui1oM8i+KHiGU0hAO9aMWM1pvuaRySzl0ucQ==}
 
   hexo-i18n@2.0.0:
     resolution: {integrity: sha512-dkUXecEtChaQMdTHN4WR13c8GwKqjbSOZPJS9qDqV6Ebnb77Wa/nQzWFckhP0dCps3a9lUQBd8hYGOMbOosiQQ==}
@@ -1775,6 +1781,9 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  qr-image@3.2.0:
+    resolution: {integrity: sha512-rXKDS5Sx3YipVsqmlMJsJsk6jXylEpiHRC2+nJy66fxA5ExYyGa4PqwteW69SaVmAb2OQ18HbYriT7cGQMbduw==}
 
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
@@ -3099,7 +3108,7 @@ snapshots:
   ajv@8.17.1:
     dependencies:
       fast-deep-equal: 3.1.3
-      fast-uri: 3.0.6
+      fast-uri: 3.1.0
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
@@ -3201,7 +3210,7 @@ snapshots:
   browserslist@4.25.3:
     dependencies:
       caniuse-lite: 1.0.30001737
-      electron-to-chromium: 1.5.208
+      electron-to-chromium: 1.5.211
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.3)
 
@@ -3406,7 +3415,7 @@ snapshots:
     dependencies:
       jake: 10.9.4
 
-  electron-to-chromium@1.5.208: {}
+  electron-to-chromium@1.5.211: {}
 
   emoji-regex@8.0.0: {}
 
@@ -3518,7 +3527,7 @@ snapshots:
 
   fast-json-stable-stringify@2.1.0: {}
 
-  fast-uri@3.0.6: {}
+  fast-uri@3.1.0: {}
 
   filelist@1.0.4:
     dependencies:
@@ -3716,6 +3725,10 @@ snapshots:
     dependencies:
       hexo-pagination: 3.0.0
 
+  hexo-helper-qrcode@1.0.2:
+    dependencies:
+      qr-image: 3.2.0
+
   hexo-i18n@2.0.0:
     dependencies:
       sprintf-js: 1.1.3
@@ -3724,9 +3737,9 @@ snapshots:
     dependencies:
       picocolors: 1.1.1
 
-  hexo-offline@3.0.0(hexo@7.3.0(chokidar@4.0.3)):
+  hexo-offline@3.0.0(hexo@7.3.0(chokidar@3.6.0)):
     dependencies:
-      hexo: 7.3.0(chokidar@4.0.3)
+      hexo: 7.3.0(chokidar@3.6.0)
       workbox-build: 7.3.0
     transitivePeerDependencies:
       - '@types/babel__core'
@@ -3782,7 +3795,7 @@ snapshots:
       prismjs: 1.30.0
       strip-indent: 3.0.0
 
-  hexo@7.3.0(chokidar@4.0.3):
+  hexo@7.3.0(chokidar@3.6.0):
     dependencies:
       abbrev: 2.0.0
       archy: 1.0.0
@@ -3799,7 +3812,7 @@ snapshots:
       moize: 6.1.6
       moment: 2.30.1
       moment-timezone: 0.5.48
-      nunjucks: 3.2.4(chokidar@4.0.3)
+      nunjucks: 3.2.4(chokidar@3.6.0)
       picocolors: 1.1.1
       pretty-hrtime: 1.0.3
       resolve: 1.22.10
@@ -4176,13 +4189,13 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
-  nunjucks@3.2.4(chokidar@4.0.3):
+  nunjucks@3.2.4(chokidar@3.6.0):
     dependencies:
       a-sync-waterfall: 1.0.1
       asap: 2.0.6
       commander: 5.1.0
     optionalDependencies:
-      chokidar: 4.0.3
+      chokidar: 3.6.0
 
   nwsapi@2.2.21: {}
 
@@ -4264,6 +4277,8 @@ snapshots:
   prismjs@1.30.0: {}
 
   punycode@2.3.1: {}
+
+  qr-image@3.2.0: {}
 
   randombytes@2.1.0:
     dependencies:
