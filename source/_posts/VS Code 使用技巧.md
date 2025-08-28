@@ -1,7 +1,7 @@
 ---
  title: "Visual Studio Code终极效率指南：必备技巧与快捷键大全" 
  date: 2025-07-14 17:28:00
- categories: [vscode, 编程, 工具] 
+ categories: [教程] 
  tags: [vscode, 编程, 工具]
  comments: true
 ---

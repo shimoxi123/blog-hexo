@@ -1,7 +1,7 @@
 ---
  title: "MarkDown语法大全" 
  date: 2025-07-14 18:00:00
- categories: [markdown] 
+ categories: [语法] 
  tags: [markdown]
  comments: true
 ---

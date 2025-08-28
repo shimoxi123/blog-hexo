@@ -1,7 +1,7 @@
 ---
 title: "使用 Git 工具远程推送到 GitHub 的完整指南"
 date: 2025-07-12 23:00:00
-categories: [Git, GitHub, Hexo 部署]
+categories: [Git]
 tags: [Git, Hexo, 部署, GitHub]
 comments: true
 ---

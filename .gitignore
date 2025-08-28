@@ -10,3 +10,4 @@ source/_posts/1test.md
 .env
 .env.local
 .env.*.local
+.claude/

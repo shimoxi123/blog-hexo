@@ -1,7 +1,7 @@
 ---
  title: "STM32 单片机入门教程" 
  date: 2025-07-14 14:00:00
- categories: [嵌入式开发, STM32, 单片机] 
+ categories: [教程]
  tags: [STM32, Keil, CubeMX, ARM]
  comments: true
 ---
