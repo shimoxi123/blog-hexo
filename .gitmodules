@@ -1,4 +1,4 @@
 [submodule "themes/volantis"]
 	path = themes/volantis
-	url = https://github.com/shimoxi123/volantis.git
-	branch = 6.0
+	url = https://github.com/shimoxi123/volantis
+	branch = EdgeOne-Pages
