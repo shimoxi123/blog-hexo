@@ -66,14 +66,37 @@ jobs:
             echo "根目录内容 (复制后):"
             ls -la
             
-            # 添加所有更改
+            # 6️⃣ 更新子模块配置 → 确保子模块指向正确的分支
+            echo "🔧 更新子模块配置 → 确保子模块指向正确的分支"
+            if [[ -f ".gitmodules" ]]; then
+              echo "找到 .gitmodules 文件，检查子模块配置..."
+              cat .gitmodules
+              
+              # 初始化并更新子模块到正确的分支
+              echo "初始化子模块..."
+              git submodule init
+              
+              echo "同步子模块 URL..."
+              git submodule sync
+              
+              echo "更新子模块到指定分支..."
+              git submodule update --remote --recursive
+              
+              echo "✅ 子模块更新完成"
+              echo "子模块状态:"
+              git submodule status
+            else
+              echo "⚠️ 未找到 .gitmodules 文件"
+            fi
+            
+            # 添加所有更改（包括子模块更改）
             git add .
             
             # 提交更改
             echo "提交更改..."
-            git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})"
+            git commit -m "${{ steps.commit_info.outputs.commit_message }} (${{ steps.commit_info.outputs.commit_id }})" || echo "没有需要提交的更改"
             
-            # 6️⃣ 强制推送 → 强制推送所有变更，覆盖远程分支历史
+            # 7️⃣ 强制推送 → 强制推送所有变更，覆盖远程分支历史
             echo "🚀 强制推送 → 强制推送所有变更，覆盖远程分支历史"
             git push --force https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }} EdgeOne-Pages
             echo "✅ 成功强制同步 main 到 EdgeOne-Pages 并复制部署文件"
