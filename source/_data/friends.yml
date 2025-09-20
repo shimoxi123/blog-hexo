@@ -11,6 +11,9 @@ youlian:
     - title: "volantis社区"
       url: https://volantis.js.org/v6/getting-started/
       avatar: https://jihulab.com/shimoxijimu/img2/raw/main/pictures/2025/08/22_15_4_45_apple-touch-icon.webp
+    - title: "sutao的个人博客"
+      url: https://blog.sutao.site/
+      avatar: "https://blog.sutao.site/wp-content/uploads/2025/06/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250611091756.jpg"
 
 volantis_developer:
   title: volantis开发者
