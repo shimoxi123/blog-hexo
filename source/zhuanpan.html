@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幸运转盘 - 每日好运</title>
+    <style>
+        /* 转盘游戏样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.2); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.4); }
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* 加载状态 */
+        .loading-container {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 转盘容器 */
+        .wheel-container {
+            text-align: center;
+            color: white;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        #wheelCanvas {
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: white;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #ff6b6b;
+            z-index: 10;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        /* 游戏控制 */
+        .game-controls {
+            margin-bottom: 30px;
+        }
+
+        .spin-button {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        .spin-button:active {
+            transform: translateY(0);
+        }
+
+        .spin-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .spin-button::before {
+            content: '';
+            position: absolute;
+            top: 极;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,极.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .spin-button:hover::before {
+            left: 100%;
+        }
+
+        .spin-hint {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* 游戏统计 */
+        .game-stats {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1极 solid rgba(255,255,255,0.2);
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            display: block;
+            font极ize: 1.5rem;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        /* 结果显示 */
+        .result-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .result-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: resultPop 0.5s ease-out;
+        }
+
+        @keyframes resultPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .result-title {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .result-message {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+极        }
+
+        .continue-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .continue-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .version {
+            font-size: 0.9rem;
+            margin-top极 5px;
+        }
+
+        /* 转盘旋转动画 */
+        .wheel-spinning {
+            animation: wheelSpin 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes wheelSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(1800deg); /* 5圈 */
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+                max-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            #wheelCanvas {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .wheel-pointer {
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+                border-top: 20px solid #ff6b6b;
+            }
+            
+            .game-stats {
+                gap: 15px;
+                margin-top: 20px;
+            }
+            
+            .stat-item {
+                padding: 10px 15px;
+                min-width: 120px;
+            }
+            
+            .result-content {
+                padding: 30px 20px;
+                margin: 0 15px;
+            }
+            
+            .result-icon {
+                font-size: 3rem;
+            }
+            
+            .result-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+            
+            .game-container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            #wheelCanvas {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .wheel-pointer {
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-top: 18px solid #ff6b6b;
+                top: -8px;
+            }
+            
+            .spin极button {
+                padding: 12px 25px;
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+            
+            .game-stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                margin-top: 15px;
+            }
+            
+            .stat-item {
+                padding: 8px 12px;
+                width: 100%;
+                max-width: 200px;
+                text-align: center;
+            }
+            
+            .stat-value {
+                font-size: 1.3rem;
+            }
+            
+            .result-content {
+                padding: 25px 15px;
+            }
+            
+            .result-icon {
+                font-size: 2.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .result-title {
+                font-size: 1.3rem;
+                margin-bottom: 12px;
+            }
+            
+            .result-message {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+            
+            .continue-button {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+            
+            .footer {
+                margin-top: 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            #wheelCanvas {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .spin-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 触摸设备优化 */
+        @media (hover: none) {
+            .spin-button:hover {
+                transform: none;
+                box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            }
+            
+            .continue-button:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .spin-button:active {
+                transform: scale(0.95);
+            }
+            
+            .continue-button:active {
+                transform: scale(0.95);
+            }
+        }
+
+        /* 防止在移动设备上的意外缩放 */
+        @media screen and (max-width: 768px) {
+            input, textarea, select {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🎰🎰 幸运转盘</h1>
+            <p class="subtitle">转动转盘，获得今日好运！</p>
+        </div>
+        
+        <div class="game-content">
+            <!-- 加载状态 -->
+            <div class="loading-container" id="loadingContainer">
+                <div class="loading-spinner"></div>
+                <p>正在准备您的幸运转盘...</p>
+            </div>
+            
+            <!-- 转盘游戏 -->
+            <div class="wheel-container" id="wheelContainer" style="display: none;">
+                <div class="wheel-wrapper">
+                    <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                    <div class="wheel-pointer"></div>
+                </div>
+                
+                <div class="game-controls">
+                    <button id="spinBtn" class="spin-button">
+                        <span class="btn-text">开始转动</span>
+                    </button>
+                    <p class="spin-h极t">点击按钮开始转动转盘</p>
+                </div>
+                
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">今日转动次数:</span>
+                        <span class="stat-value" id="todaySpins">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">累计转动:</span>
+                        <span class="stat-value" id="totalSpins">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 结果显示 -->
+            <div class="result-container" id="resultContainer" style="display: none;">
+                <div class="result-content">
+                    <div class="result-icon" id="resultIcon">🎉🎉</div>
+                    <h2 class="result-title" id="resultTitle">恭喜您！</h2>
+                    <p class="result-message" id="resultMessage">您获得了今日好运！</p>
+                    <button id="continueBtn" class="continue-button">继续转动</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🍀🍀 每日好运转盘游戏</p>
+            <p class="version">愿您天天好运！</p>
+        </div>
+    </div>
+    
+    <script>
+        // 游戏逻辑代码
+        document.addEventListener('DOMContentLoaded', function() {
+            // 模拟加载过程
+            setTimeout(() => {
+                document.getElementById('loadingContainer').style.display = 'none';
+                document.getElementById('wheelContainer').style.display = 'block';
+                initWheel();
+            }, 1500);
+            
+            // 初始化转盘
+            function initWheel() {
+                const canvas = document.getElementById('wheelCanvas');
+                const ctx = canvas.getContext('2d');
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = canvas.width / 2 - 10;
+                
+                // 奖项数据
+                const prizes = [
+                    { text: "一等奖", color: "#FF6B6B" },
+                    { text: "二等奖", color: "#4ECDC4" },
+                    { text: "三等奖", color: "#FFE66D" },
+                    { text: "四等奖", color: "#6B5B95" },
+                    { text: "五等奖", color: "#88D8B0" },
+                    { text: "六等奖", color: "#FDC162" },
+                    { text: "七等奖", color: "#5B6E90" },
+                    { text: "谢谢参与", color: "#A6DCEF" }
+                ];
+                
+                // 绘制转盘
+                function drawWheel() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const sliceAngle = 2 * Math.PI / prizes.length;
+                    
+                    prizes.forEach((prize, i) => {
+                        const startAngle = i * sliceAngle;
+                        const endAngle = (i + 1) * sliceAngle;
+                        
+                        // 绘制扇形
+                        ctx.beginPath();
+                        ctx.moveTo(centerX, centerY);
+                        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                        ctx.closePath();
+                        ctx.fillStyle = prize.color;
+                        ctx.fill();
+                        ctx.lineWidth = 2;
+                        ctx.strokeStyle = 'white';
+                        ctx.stroke();
+                        
+                        // 绘制文本
+                        ctx.save();
+                        ctx.translate(centerX, centerY);
+                        ctx.rotate(startAngle + sliceAngle / 2);
+                        ctx.textAlign = 'right';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillStyle = '#fff';
+                        ctx.font = 'bold 14px Arial';
+                        ctx.fillText(prize.text, radius - 20, 0);
+                        ctx.restore();
+                    });
+                    
+                    // 绘制中心圆
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#fff';
+                    ctx.fill();
+                    ctx.strokeStyle = '#ccc';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+                
+                drawWheel();
+                
+                // 旋转转盘逻辑
+                const spinBtn = document.getElementById('spinBtn');
+                const continueBtn = document.getElementById('continueBtn');
+                const resultContainer = document.getElementById('resultContainer');
+                const resultTitle = document.getElementById('resultTitle');
+                const resultMessage = document.getElementById('resultMessage');
+                const resultIcon = document.getElementById('resultIcon');
+                const todaySpins = document.getElementById('todaySpins');
+                const totalSpins = document.getElementById('totalSpins');
+                
+                let spinCount = 0;
+                let totalSpinCount = 0;
+                
+                spinBtn.addEventListener('click', function() {
+                    // 禁用按钮
+                    spinBtn.disabled = true;
+                    spinBtn.querySelector('.btn-text').textContent = '转动中...';
+                    
+                    // 随机选择奖项
+                    const randomPrize = Math.floor(Math.random() * prizes.length);
+                    const selectedPrize = prizes[randomPrize];
+                    
+                    // 计算旋转角度 (5圈 + 选中奖项的角度)
+                    const sliceAngle = 360 / prizes.length;
+                    const extraAngle = sliceAngle * randomPrize;
+                    const totalRotation = 1800 + extraAngle; // 5圈 + 奖项偏移
+                    
+                    // 应用旋转动画
+                    canvas.style.transition = 'transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    canvas.style.transform = `rotate(${totalRotation}deg)`;
+                    
+                    // 动画结束后显示结果
+                    setTimeout(() => {
+                        spinCount++;
+                        totalSpinCount++;
+                        todaySpins.textContent = spinCount;
+                        totalSpins.textContent = totalSpinCount;
+                        
+                        // 显示结果
+                        resultTitle.textContent = '恭喜您！';
+                        resultMessage.textContent = `您获得了：${selectedPrize.text}`;
+                        resultIcon.textContent = '🎉🎉';
+                        resultContainer.style.display = 'flex';
+                        
+                        // 重置转盘位置（无动画）
+                        setTimeout(() => {
+                            canvas.style.transition = 'none';
+                            canvas.style.transform = `rotate(${extraAngle}deg)`;
+                        }, 100);
+                    }, 3000);
+                });
+                
+                continueBtn.addEventListener('click', function() {
+                    resultContainer.style.display = 'none';
+                    spinBtn.disabled = false;
+                    spinBtn.querySelector('.btn-text').textContent = '再次转动';
+                    
+                    // 重绘转盘以清除任何视觉问题
+                    drawWheel();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
