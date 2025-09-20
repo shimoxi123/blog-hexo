@@ -17,7 +17,7 @@ timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://www.shimoxi.qzz.io
+url: https://www.shimoxi.icu
 permalink: :year/:month/:day/:hour/
 permalink_defaults:
 pretty_urls:
@@ -33,7 +33,6 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
-  - rainyun-coupon.html
 
 # Writing
 new_post_name: :title.md # File name of new posts
