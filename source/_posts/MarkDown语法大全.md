@@ -4,6 +4,7 @@
  categories: [语法] 
  tags: [markdown]
  comments: true
+ headimg: "https://cdn.jsdelivr.net/gh/shimoxi123/img/img/20250812003557353.webp"
 ---
 
 <!-- more -->
