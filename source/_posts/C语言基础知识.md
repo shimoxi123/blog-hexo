@@ -4,6 +4,8 @@ date: 2025-09-21 16:30:00
 tags: [编程, C语言, 基础教程]
 categories: 编程语言
 description: C语言入门基础知识，包含语法、数据类型、控制结构等核心概念
+headimg: "https://jihulab.com/shimoxijimu/img2/raw/main/pictures/c_2025092117_03f3e1dbc05b9e45.webp"
+comments: true
 ---
 
 # C语言基础知识
