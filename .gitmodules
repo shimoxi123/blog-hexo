@@ -2,7 +2,3 @@
 	path = themes/volantis
 	url = https://github.com/shimoxi123/volantis.git
 	branch = 6.0
-
-[submodule "source/html/win12"]
-	path = source/html/win12
-	url = https://github.com/tjy-gitnub/win12.git
