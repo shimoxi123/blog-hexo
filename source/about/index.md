@@ -25,7 +25,7 @@ twikoo:
 - 持续更新中...
 
 ## 📞 联系方式
-- 📧 邮箱：[boke@shimoxi.qzz.io](mailto:boke@shimoxi.qzz.io)
+- 📧 邮箱：[boke@shimoxi.dpdns.org](mailto:boke@shimoxi.dpdns.org)
 - 🐙 GitHub：[shimoxi123](https://github.com/shimoxi123/)
 - 🌐 网站：[www.shimoxi.qzz.io](https://www.shimoxi.qzz.io)
 
