@@ -15,7 +15,7 @@ twikoo:
 
 **石墨烯积木资源站** 是一个基于开源项目 [OpenList](https://github.com/OpenListTeam/OpenList) 搭建的资源分享平台，致力于为大家提供实用、安全、高质量的软件工具和玩机资源。
 <div style="text-align: center; margin: 30px 0;">
-  <a href="https://www.shimoxi.icu/" target="_blank" style="display: inline-block; background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: transform 0.3s ease;">
+  <a href="https://www.shimoxi.icu/" target="_blank" style="display: inline-block; background: linear-gradient(45deg, #2bf094ff, #54acf4ff); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: transform 0.3s ease;">
     🌐 立即访问资源站
   </a>
 </div>
