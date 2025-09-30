@@ -33,7 +33,6 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
-  - rainyun-coupon.html
   - html/**
 
 # Writing
