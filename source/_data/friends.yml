@@ -1,19 +1,26 @@
 youlian:
-  title:
-  description:
+  description:  # 分组描述
   items:
     - title: "Aliom个人博客"
       url: https://bailanwa.dpdns.org/
       avatar: https://bailanwa.dpdns.org/logo.png
+
     - title: "二叉树树"
       url: https://2x.nz/
       avatar: https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0
+
     - title: "volantis社区"
       url: https://volantis.js.org/v6/getting-started/
       avatar: https://jihulab.com/shimoxijimu/img2/raw/main/pictures/2025/08/22_15_4_45_apple-touch-icon.webp
+
     - title: "sutao的个人博客"
       url: https://blog.sutao.site/
       avatar: https://jihulab.com/shimoxijimu/img2/raw/main/pictures/sutao-avatar_2025_09_21_13_08d98f21a8329741.webp
+
+    - title: "Fgaoxing"
+      description: "一个少年的博客"
+      url: https://www.yt-blog.top/
+      avatar: https://img.yt-blog.top/webp/logo.webp
 
 volantis_developer:
   title: volantis开发者
