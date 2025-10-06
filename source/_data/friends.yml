@@ -21,6 +21,10 @@ youlian:
       description: "一个少年的博客"
       url: https://www.yt-blog.top/
       avatar: https://img.yt-blog.top/webp/logo.webp
+    - title: "Evilrabbit Blog"
+      description: "爱 Coding 爱生活"
+      url: https://blog.yujiay.wang/
+      avatar: https://blog.yujiay.wang/images/site/BlogHsvg.png
 
 volantis_developer:
   title: volantis开发者
