@@ -4,7 +4,7 @@
  categories: [语法] 
  tags: [markdown]
  comments: true
- headimg: "https://cdn.jsdelivr.net/gh/shimoxi123/img/img/20250812003557353.webp"
+ headimg: "img/gh/20250812003557353.webp"
 ---
 
 <!-- more -->
@@ -73,7 +73,7 @@
     ```
 3. **插入图片**：
     - 语法：`![自定义文本](图片URL)`
-    - 示例：![示例图片](https://cdn.jsdelivr.net/gh/shimoxi123/img/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png)
+    - 示例：![示例图片](gh/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png)
 
 4. **分隔线**：
    - 语法：`---`
