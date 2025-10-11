@@ -8,5 +8,5 @@ title: 友链 # 可选，这是友链页的标题
 ```
   - title: "石墨烯积木"
     url: https://www.shimxo.qzz.io/
-    avatar: img/2025/08/22_13_42_2_6894b49f58cb8da5c80fd8e5.webp
+    avatar: https://weavatar.com/avatar/b5b04f331f1a0becd7327797279fd795fab1d32437eaedd2cc2982ea16932c52
 ```
