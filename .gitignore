@@ -11,3 +11,4 @@ source/_posts/1test.md
 .env.local
 .env.*.local
 .claude/
+CSDN/

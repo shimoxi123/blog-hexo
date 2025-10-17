@@ -4,7 +4,7 @@
  categories: [语法] 
  tags: [markdown]
  comments: true
- headimg: "img/gh/20250812003557353.webp"
+ headimg: "/img/gh/20250812003557353.webp"
 ---
 
 <!-- more -->
