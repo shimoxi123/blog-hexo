@@ -1,3 +1,18 @@
+# 友链配置文件
+#
+# 如何申请友链：
+# 1. Fork 本仓库：https://github.com/shimoxi123/blog-hexo
+# 2. 在下方 youlian 分组的 items 中添加你的网站信息
+# 3. 提交 Pull Request
+#
+# 友链格式示例：
+# - title: "你的网站名称"
+#   url: https://your-website.com/
+#   avatar: https://your-avatar-url.com/avatar.png
+#   description: "网站描述（可选）"
+#
+# 详细说明请查看：.github/FRIEND_LINK_TEMPLATE.md
+
 youlian:
   description:  # 分组描述
   items:
@@ -11,11 +26,11 @@ youlian:
 
     - title: "volantis社区"
       url: https://volantis.js.org/v6/getting-started/
-      avatar: https://img.shimoxi.qzz.io/img/22_15_4_45_apple-touch-icon_2025101816_df89713b8dfe29eb.webp
+      avatar: https://img.shimoxi.qzz.io/img/voicon_2025101817_df89713b8dfe29eb.webp
 
     - title: "sutao的个人博客"
       url: https://blog.sutao.site/
-      avatar: https://img.shimoxi.qzz.io/img/sutao-avatar_2025_09_21_13_08d98f21a8329741_2025101816_3ab8a46b336b37c9.webp
+      avatar: https://img.shimoxi.qzz.io/img/sutao-avatar_2025101817_3ab8a46b336b37c9.webp
 
     - title: "Fgaoxing"
       description: "一个少年的博客"
