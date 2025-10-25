@@ -12,3 +12,4 @@ source/_posts/1test.md
 .env.*.local
 .claude/
 CSDN/
+.vscode
