@@ -9,3 +9,31 @@
     max-width: 65vw !important; /* 修改为你想要的视口宽度百分比 */
   }
 }
+
+/* 侧边栏固定 - 滚动时保持可见 */
+#l_side {
+  position: sticky !important;
+  top: 80px; /* 导航栏高度 + 间距 */
+  align-self: flex-start;
+  max-height: calc(100vh - 100px); /* 限制最大高度,防止超出视口 */
+  overflow-y: auto; /* 如果侧边栏内容过多,允许内部滚动 */
+}
+
+/* 平板和移动设备上取消固定效果 */
+@media screen and (max-width: 768px) {
+  #l_side {
+    position: relative !important;
+    max-height: none;
+  }
+}
+
+/* 修改代码块字体大小 */
+pre code {
+  font-size: 16px !important;
+}
+
+/* 如果上面的不生效，试试这个 */
+.highlight pre,
+.highlight code {
+  font-size: 16px !important;
+}

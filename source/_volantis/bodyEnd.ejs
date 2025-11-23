@@ -1,0 +1,18 @@
+<script>
+// 为所有文章图片添加点击放大功能
+document.addEventListener('DOMContentLoaded', function() {
+  // 等待一小段时间确保页面完全加载
+  setTimeout(function() {
+    // 选择文章内容区域的所有图片（排除已经被处理的和特殊图片）
+    const images = document.querySelectorAll('.md img:not([fancybox]):not(.wl-emoji):not([atk-emoticon]):not([class*="emo"])');
+
+    if (images.length > 0 && typeof VolantisFancyBox !== 'undefined') {
+      // 创建 FancyBox 实例并绑定所有文章图片
+      const fancyBoxInstance = new VolantisFancyBox(false);
+      fancyBoxInstance.groupBind('.md img:not([fancybox]):not(.wl-emoji):not([atk-emoticon]):not([class*="emo"])', 'article-images');
+
+      console.log('✓ 已为 ' + images.length + ' 张图片启用点击放大功能');
+    }
+  }, 500);
+});
+</script>
