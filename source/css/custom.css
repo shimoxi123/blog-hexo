@@ -1,0 +1,11 @@
+/* 只修改主页的宽度 */
+.home-page .body-wrapper {
+  max-width: 1600px !important; /* 修改为你想要的宽度 */
+}
+
+/* 2K屏幕以上的主页宽度 */
+@media screen and (min-width: 1600px) {
+  .home-page .body-wrapper {
+    max-width: 65vw !important; /* 修改为你想要的视口宽度百分比 */
+  }
+}

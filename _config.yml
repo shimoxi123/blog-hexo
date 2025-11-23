@@ -127,3 +127,8 @@ feed:
 type: atom
 path: atom.xml
 limit: 20
+
+# 自定义CSS注入
+import:
+  head_end:
+    - <link rel="stylesheet" href="/css/custom.css">
