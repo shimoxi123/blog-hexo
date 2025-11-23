@@ -12,7 +12,9 @@
     "version": "8.1.1"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
     "hexo": "^8.0.0",
+    "hexo-fs": "^5.0.1",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-index": "^4.0.0",
@@ -21,6 +23,8 @@
     "hexo-renderer-marked": "^7.0.0",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
-    "hexo-theme-landscape": "^1.0.0"
+    "hexo-theme-landscape": "^1.0.0",
+    "hexo-util": "^4.0.0",
+    "stylus": "^0.64.0"
   }
 }

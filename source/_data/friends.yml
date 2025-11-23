@@ -1,0 +1,77 @@
+# 友链配置文件
+#
+# 如何申请友链：
+# 1. Fork 本仓库：https://github.com/shimoxi123/blog-hexo
+# 2. 在下方 youlian 分组的 items 中添加你的网站信息
+# 3. 提交 Pull Request
+#
+# 友链格式示例：
+# - group: "分组名称"
+#   description: "分组描述（可选）"
+#   items:
+#     - title: "你的网站名称"
+#       url: https://your-website.com/
+#       avatar: https://your-avatar-url.com/avatar.png
+#       description: "网站描述（可选）"
+#
+# 详细说明请查看：.github/FRIEND_LINK_TEMPLATE.md
+
+- group: 友链
+  description:  # 分组描述
+  items:
+    - title: "Aliom个人博客"
+      url: https://bailanwa.dpdns.org/
+      avatar: https://img.san3.cn/img/ALIOM_2025112221_c96272f56f2cdcc5.png
+
+    - title: "二叉树树"
+      url: https://2x.nz/
+      avatar: https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0
+
+    - title: "volantis社区"
+      url: https://volantis.js.org/v6/getting-started/
+      avatar: https://img.san3.cn/img/voicon_2025101817_df89713b8dfe29eb.webp
+
+    - title: "sutao的个人博客"
+      url: https://blog.sutao.site/
+      avatar: https://img.san3.cn/img/sutao-avatar_2025101817_3ab8a46b336b37c9.webp
+
+    - title: "Fgaoxing"
+      description: "一个少年的博客"
+      url: https://www.yt-blog.top/
+      avatar: https://img.yt-blog.top/webp/logo.webp
+
+    - title: "Evilrabbit Blog"
+      description: "爱 Coding 爱生活"
+      url: https://blog.yujiay.wang/
+      avatar: https://blog.yujiay.wang/images/site/BlogHsvg.png
+
+- group: volantis开发者
+  description: volantis开发者描述
+  items:
+    - title: xaoxuu
+      url: https://github.com/xaoxuu
+      avatar: https://avatars.githubusercontent.com/u/16400144?s=60&v=4
+
+    - title: MHuiG
+      url: https://github.com/MHuiG
+      avatar: https://avatars.githubusercontent.com/u/38281581?s=60&v=4
+
+    - title: inkss
+      url: https://github.com/inkss
+      avatar: https://avatars.githubusercontent.com/u/31947043?s=60&v=4
+
+    - title: Colsrch
+      url: https://github.com/Colsrch
+      avatar: https://avatars.githubusercontent.com/u/58458181?s=60&v=4
+
+    - title: Drew233
+      url: https://github.com/Drew233
+      avatar: https://avatars.githubusercontent.com/u/47592224?s=60&v=4
+
+    - title: Linhk1606
+      url: https://github.com/Linhk1606
+      avatar: https://avatars.githubusercontent.com/u/50829219?s=60&v=4
+
+    - title: W4J1e
+      url: https://github.com/W4J1e
+      avatar: https://avatars.githubusercontent.com/u/74824162?s=60&v=4
