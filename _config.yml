@@ -110,23 +110,38 @@ deploy:
   type: ''
 
 
-# Sitemap 站点地图
+# Sitemap 站点地图Hexo 的站点地图生成器
 sitemap:
-  path: sitemap.xml
-# 百度站点地图
-baidusitemap:
-  path: baidusitemap.xml
+  path:
+    - sitemap.xml
+    - sitemap.txt
+  # template: ./sitemap_template.xml
+  # template_txt: ./sitemap_template.txt
+  rel: true
+  tags: true
+  categories: true
+
 
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 #RSS订阅
-plugin:
-- hexo-generator-feed
-#Feed Atom
 feed:
-type: atom
-path: atom.xml
-limit: 20
+  enable: true
+  type:
+    - atom
+    - rss2
+  path:
+    - atom.xml
+    - rss2.xml
+  limit: 20
+  hub:
+  content:
+  content_limit: 140
+  content_limit_delim: ' '
+  order_by: -date
+  icon: icon.png
+  autodiscovery: true
+  template:
 
 # 自定义CSS注入
 import:
