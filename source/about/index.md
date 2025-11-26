@@ -27,7 +27,7 @@ twikoo:
 ## 📞 联系方式
 - 📧 邮箱：[boke@shimoxi.dpdns.org](mailto:boke@shimoxi.dpdns.org)
 - 🐙 GitHub：[shimoxi123](https://github.com/shimoxi123/)
-- 🌐 网站：[www.shimoxi.qzz.io](https://www.shimoxi.qzz.io)
+- 🌐 网站：[www.san3.cn](https://www.san3.cn)
 
 ## 💝 友情链接
 如果你也有技术博客，欢迎交换友链！请在评论区留言或发邮件联系我。
