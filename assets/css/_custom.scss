@@ -1,0 +1,72 @@
+// ===== 首页文章列表：双列卡片布局 =====
+
+.home.posts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+
+  // 非文章元素（个人资料、内容块、分页器）占满整行
+  & > :not(article) {
+    grid-column: 1 / -1;
+  }
+
+  .summary {
+    padding-block: 0;
+    border: 1px solid var(--fi-global-border-color);
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    // 移除原来的斜线分隔符
+    &:not(:last-of-type)::after {
+      display: none;
+    }
+
+    .featured-image-preview {
+      margin: 0;
+      border-radius: 0;
+      aspect-ratio: auto 16 / 9;
+    }
+
+    // 图片下方的内容区域加内边距
+    .single-title {
+      margin: 0.75rem 1rem 0.25rem;
+    }
+
+    .post-meta {
+      padding-inline: 1rem;
+    }
+
+    .content {
+      padding-inline: 1rem;
+      margin-top: 0.3rem;
+    }
+
+    .post-footer {
+      padding: 0.5rem 1rem 0.75rem;
+      margin-block: 0;
+    }
+  }
+}
+
+// 窄屏降级为单列
+@media (max-width: 768px) {
+  .home.posts {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ===== 文章正文字体大小 =====
+.page.single .content {
+  font-size: 1.15rem;
+
+  // 代码块字体大小
+  pre code {
+    font-size: 1.15rem;
+  }
+
+  // 行内代码字体大小
+  code {
+    font-size: 1.15em;
+  }
+}
