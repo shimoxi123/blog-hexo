@@ -54,10 +54,10 @@ featuredImagePreview: "https://img.san3.cn/img/MCV_SummerDrop_Hero_DotNet_Homepa
 ### 💡 本教程选择说明
 
 **本教程使用 Arclight 作为示例服务端**，原因如下：
-- ✅ 同时支持Forge模组和Bukkit插件
-- ✅ 可以安装管理类插件（如EssentialsX、LuckPerms等）
-- ✅ 兼容性较好，适合大部分整合包
-- ✅ 雨云平台直接支持一键安装
+- 同时支持Forge模组和Bukkit插件
+- 可以安装管理类插件（如EssentialsX、LuckPerms等）
+- 兼容性较好，适合大部分整合包
+- 雨云平台直接支持一键安装
 
 > [!NOTE]
 > 如果你的整合包与Arclight不兼容，可以切换为Mohist或纯Forge端，配置步骤基本相同。
@@ -69,7 +69,7 @@ featuredImagePreview: "https://img.san3.cn/img/MCV_SummerDrop_Hero_DotNet_Homepa
     - 下面的服务端选择Arclight和Mohist都可以，我选择的是Arclight
 3. 勾选确认操作并放弃服务器内数据
 4. 点击执行操作，等待服务器重装完成，一般一分钟左右就好了
-![重装服务器](https://img.san3.cn/img/5ceda53391dcb9d3.webp)
+{{< image src="https://img.san3.cn/img/5ceda53391dcb9d3.webp" caption="重装服务器" >}}
 5. 此时会弹出选择正版验证或者离线验证的提示，选择离线验证即可，如果你和你的小伙伴都有正版账号也可以选择正版验证
 
 ## 2️⃣ 下载整合包服务端

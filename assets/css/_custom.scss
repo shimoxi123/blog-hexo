@@ -55,18 +55,3 @@
     grid-template-columns: 1fr;
   }
 }
-
-// ===== 文章正文字体大小 =====
-.page.single .content {
-  font-size: 1.15rem;
-
-  // 代码块字体大小
-  pre code {
-    font-size: 1.15rem;
-  }
-
-  // 行内代码字体大小
-  code {
-    font-size: 1.15em;
-  }
-}

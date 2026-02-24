@@ -19,6 +19,8 @@ featuredImagePreview: "https://img.san3.cn/img/988e8ce36cdd8570.webp"
 教程分为上下两篇，上篇介绍如何申请免费的云服务器，下篇介绍如何使用免费的云服务器搭建我的世界整合包服务器。
 本文主要介绍如何在雨云平台上申请免费的游戏云服务器，后续会有如何使用免费的云服务器搭建我的世界整合包服务器的教程。
 
+<!-- more -->
+
 ## 1️⃣领取优惠
 
 <div style="text-align: center; margin: 30px 0;">
@@ -27,23 +29,23 @@ featuredImagePreview: "https://img.san3.cn/img/988e8ce36cdd8570.webp"
   </a>
 </div>
 
-![在雨云官网首页点击注册](https://img.san3.cn/img/ebe9a8b774e01d84.webp)
+{{< image src="https://img.san3.cn/img/ebe9a8b774e01d84.webp" caption="在雨云官网首页点击注册" >}}
 
 ## 2️⃣注册
 然后选择下面三个任意一个方法注册都可以
 推荐使用微信注册更方便
-![微信注册](https://img.san3.cn/img/ac94838b52838e4d.webp)
+{{< image src="https://img.san3.cn/img/ac94838b52838e4d.webp" caption="微信注册" >}}
 
 ## 3️⃣做任务赚积分
 注册成功后点击 积分中心-»赚取积分
-![注册成功后点击积分中心赚取积分](https://img.san3.cn/img/ed608557c06729a2.webp)
+{{< image src="https://img.san3.cn/img/ed608557c06729a2.webp" caption="注册成功后点击积分中心赚取积分" >}}
 新手做任务保底可以领取8500积分，后续每天签到每天可以领取500积分
 任务都挺简单的基本都是完善信息
-![做任务赚积分](https://img.san3.cn/img/ed608557c06729a2.webp)
+{{< image src="https://img.san3.cn/img/ed608557c06729a2.webp" caption="做任务赚积分" >}}
 
 ## 4️⃣领取服务器
 领取积分后点击 积分中心-»积分商城 上面两个都是免费的游戏云服务器
-![领取服务器](https://img.san3.cn/img/b7f505d92493a2f6.webp)
+{{< image src="https://img.san3.cn/img/b7f505d92493a2f6.webp" caption="领取服务器" >}}
 
 一个游戏云服务器只要2000积分七天，后面续费也是2258积分续期七天，或者10000积分续期30天，
 
@@ -55,4 +57,4 @@ featuredImagePreview: "https://img.san3.cn/img/988e8ce36cdd8570.webp"
 - 可以兑换优惠券，优惠券可以在购买服务器时使用
 
 ## 余额可以安装应用云，例如alist和open list等
-![应用云](https://img.san3.cn/img/0bab35007f9ebc1e.webp)
+{{< image src="https://img.san3.cn/img/0bab35007f9ebc1e.webp" caption="应用云" >}}

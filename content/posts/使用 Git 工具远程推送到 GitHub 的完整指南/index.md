@@ -77,7 +77,8 @@ origin  https://github.com/shimoxi123/GeRenBoKe.git (push)
    git push -u origin main
    ```
 
-> **备注**：第一次推送时需要加 `-u`，可以在后续直接使用 `git push`。
+> [!NOTE]
+> 第一次推送时需要加 `-u`，可以在后续直接使用 `git push`。
 
 ---
 

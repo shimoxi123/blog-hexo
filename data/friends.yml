@@ -1,0 +1,44 @@
+# 友链数据
+#
+# 如何申请友链：
+# 1. Fork 本仓库：https://github.com/shimoxi123/blog-hexo
+# 2. 在下方添加你的网站信息
+# 3. 提交 Pull Request
+#
+# 友链格式示例：
+# - nickname: 朋友名字
+#   avatar: 朋友头像
+#   url: 站点链接
+#   description: 对朋友或其站点的说明
+
+- nickname: "Aliom个人博客"
+  avatar: /images/friends/Aliom.svg
+  url: https://bailanwa.dpdns.org/
+  description: "一个技术小白的成长笔记"
+
+- nickname: "二叉树树"
+  avatar: https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0
+  url: https://2x.nz/
+
+- nickname: "volantis社区"
+  avatar: https://img.san3.cn/img/voicon_2025101817_df89713b8dfe29eb.webp
+  url: https://volantis.js.org/v6/getting-started/
+
+- nickname: "sutao的个人博客"
+  avatar: /images/friends/sutao.svg
+  url: https://www.stacktao.cn/
+
+- nickname: "Fgaoxing"
+  avatar: https://img.yt-blog.top/webp/logo.webp
+  url: https://www.yt-blog.top/
+  description: "一个少年的博客"
+
+- nickname: "Evilrabbit Blog"
+  avatar: https://blog.yujiay.wang/images/site/BlogHsvg.png
+  url: https://blog.yujiay.wang/
+  description: "爱 Coding 爱生活"
+
+- nickname: "石墨烯积木"
+  avatar: https://img.san3.cn/logo.webp
+  url: https://www.san3.cn
+  description: "石墨烯积木的个人博客，分享 STM32、Linux、编程开发、Minecraft 等技术内容"
