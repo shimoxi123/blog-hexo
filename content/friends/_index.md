@@ -6,7 +6,7 @@ date: 2026-02-24
 description: "石墨烯积木的友情链接"
 keywords:
   - 友情链接
-comment: false
+comment: true
 ---
 
 <!-- data/friends.yml 中的友链数据会自动加载到此处 -->

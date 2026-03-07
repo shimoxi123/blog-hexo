@@ -161,6 +161,19 @@ weight = 3
 [menus.main.params]
 icon = "fa-solid fa-terminal"
 
+[[menus.main]]
+identifier = "vim-practice"
+parent = ""
+pre = ""
+post = ""
+name = "Vim练习"
+url = "https://vim.san3.cn"
+title = ""
+weight = 4
+
+[menus.main.params]
+icon = "fa-solid fa-keyboard"
+
 # -------------------------------------------------------------------------------------
 # Related content Configuration
 # See: https://gohugo.io/content-management/related-content/
@@ -1649,7 +1662,7 @@ inputPosition = "top"
 lang = "zh-CN"
 lightTheme = "light"
 darkTheme = "dark"
-lazyLoad = true
+lazyLoad = false
 
 # Third-party library config
 [params.page.library]
