@@ -488,9 +488,9 @@ dateFormat = "2006-01-02"
 # website images for Open Graph and Twitter Cards
 images = []
 # FixIt 0.2.12 | NEW enable PWA
-enablePWA = false
+enablePWA = true
 # FixIt 0.2.14 | NEW whether to add external Icon for external links automatically
-externalIcon = false
+externalIcon = true
 # FixIt 0.3.13 | NEW whether to capitalize titles
 capitalizeTitles = false
 # FixIt 0.3.0 | NEW whether to add site title to the title of every page
@@ -961,7 +961,7 @@ fontFamily = "inherit"
 # FixIt 0.3.10 | NEW Busuanzi count
 [params.busuanzi]
 # whether to enable busuanzi count
-enable = false
+enable = true
 # busuanzi count core script source. Default is https://vercount.one/js
 source = "https://vercount.one/js"
 # whether to show the site views
@@ -971,11 +971,11 @@ pageViews = true
 
 # Site verification code config for Google/Bing/Yandex/Pinterest/Baidu/360/Sogou
 [params.verification]
-google = ""
-bing = ""
+google = "Rk10kbFr1FZdGnC51HpLIqXf228c4VN8R4RvUIxr5g8"
+bing = "2478319FB9D70C42DA8B21C9191DB95E"
 yandex = ""
 pinterest = ""
-baidu = ""
+baidu = "codeva-aUvXlJ4qbP"
 so = ""
 sogou = ""
 
@@ -1138,9 +1138,9 @@ hotWords = true
 # FixIt 0.3.17 | NEW Summary AI config
 # See https://ai.zhheo.com/docs/summary.html
 [params.postSummary]
-enable = false
+enable = true
 # If you set `params.postChat.key`, you don't need to set `params.postSummary.key`
-key = ""
+key = "S-P2JA300N6GNLVO33"
 title = ""
 # themes options: ["", "simple", "yanzhi", "menghuan"]
 theme = ""
@@ -1154,7 +1154,7 @@ loadingText = true
 # FixIt 0.4.0 | NEW Podcast AI config
 # See https://ai.zhheo.com/docs/podcast.html
 [params.podcast]
-enable = false
+enable = true
 
 # FixIt 0.3.10 | NEW Global Feed config for RSS, Atom and JSON feed.
 [params.feed]
