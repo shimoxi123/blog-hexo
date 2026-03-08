@@ -5,6 +5,9 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: true
@@ -15,6 +18,7 @@ jobs:
     env:
       HUGO_VERSION: "0.157.0"
       SITE_URL: "https://www.san3.cn"
+      DIST_BRANCH: "pages-dist"
 
     steps:
       - name: Checkout
@@ -58,12 +62,10 @@ jobs:
           path: changed-urls.txt
           if-no-files-found: error
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+      - name: Push built files to dist branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: >
-            pages deploy public
-            --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
-            --branch=${{ github.ref_name }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: ${{ env.DIST_BRANCH }}
+          force_orphan: true
