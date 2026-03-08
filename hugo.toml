@@ -1140,7 +1140,7 @@ hotWords = true
 [params.postSummary]
 enable = true
 # If you set `params.postChat.key`, you don't need to set `params.postSummary.key`
-key = "S-P2JA300N6GNLVO33"
+key = ""
 title = ""
 # themes options: ["", "simple", "yanzhi", "menghuan"]
 theme = ""
