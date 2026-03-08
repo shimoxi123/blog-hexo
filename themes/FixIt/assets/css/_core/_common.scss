@@ -41,7 +41,7 @@
 
 @each $color, $value in $theme-colors {
   .text-#{$color} {
-    color: var(#{$rootPrefix}#{$color}) !important;
+    color: fixit-var(#{$color}) !important;
   }
 }
 
@@ -53,4 +53,15 @@
 
 .variant-numeric {
   font-variant-numeric: tabular-nums lining-nums;
+}
+
+.rounded-full {
+  @include border-radius(full);
+}
+
+// auto adapt to dark mode by inverting the color and hue
+.auto-dark-mode {
+  [data-theme=dark] & {
+    filter: invert(1) hue-rotate(0.5turn);
+  }
 }

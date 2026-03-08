@@ -171,7 +171,7 @@ weight = 80
 
 [module.hugoVersion]
 extended = true
-min = "0.147.7"
+min = "0.156.0"
 
 # -------------------------------------------------------------------------------------
 # Markup Configuration
@@ -453,6 +453,8 @@ summaryPlainify = false
 # default is false for better performance, especially for single-language sites
 # set to true if your site has multiple languages and you want to show all content
 enableTranslationMerge = false
+# FixIt 0.4.4 | NEW whether to enable tooltip replacement for elements with title attribute, such as footnote references
+tooltip = true
 # FixIt 0.2.14 | NEW FixIt will, by default, inject a theme meta tag in the HTML head on the home page only.
 # You can turn it off, but we would really appreciate if you don’t, as this is a good way to watch FixIt's popularity on the rise.
 disableThemeInject = false
@@ -1144,6 +1146,10 @@ wrapperClass = ""
 maxShownLines = 10
 # whether to enable code copy button
 copyable = true
+# [classic] whether to enable code download button in the code block header
+downloadable = false
+# [classic] whether to enable code fullscreen button in the code block header
+fullscreen = false
 # [classic] whether to enable line numbers toggle button in the code block header
 lineNosToggler = true
 # [classic] whether to enable toggle line wrapping button in the code block header
