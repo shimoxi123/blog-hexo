@@ -1,0 +1,69 @@
+name: Deploy Hugo to Cloudflare Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: "0.157.0"
+      SITE_URL: "https://www.san3.cn"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          submodules: recursive
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Build current site
+        run: hugo --minify --destination public
+
+      - name: Build previous site (if exists)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            PREV_SHA="$(git rev-parse HEAD^)"
+            git worktree add /tmp/prev-site "${PREV_SHA}"
+            git -C /tmp/prev-site submodule update --init --recursive
+            hugo --minify --source /tmp/prev-site --destination /tmp/public-prev
+          else
+            mkdir -p /tmp/public-prev
+          fi
+
+      - name: Generate changed URL list
+        run: bash scripts/gen-changed-urls.sh "/tmp/public-prev" "public" "${SITE_URL}" "changed-urls.txt"
+
+      - name: Expose changed list on site
+        run: cp changed-urls.txt public/_changed-urls.txt
+
+      - name: Upload changed list artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: changed-urls
+          path: changed-urls.txt
+          if-no-files-found: error
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: >
+            pages deploy public
+            --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+            --branch=${{ github.ref_name }}
