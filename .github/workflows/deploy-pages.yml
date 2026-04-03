@@ -16,7 +16,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: "0.157.0"
+      HUGO_VERSION: "latest"
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       SITE_URL: "https://www.san3.cn"
       DIST_BRANCH: "pages-dist"
 
