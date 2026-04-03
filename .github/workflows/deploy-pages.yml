@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -16,22 +18,25 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: "latest"
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       SITE_URL: "https://www.san3.cn"
       DIST_BRANCH: "pages-dist"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 2
           submodules: recursive
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
+ 
+      - name: Setup Node.js (Latest)
+        uses: actions/setup-node@v4
         with:
-          hugo-version: ${{ env.HUGO_VERSION }}
+          node-version: latest
+
+      - name: Setup Hugo (Latest)
+        uses: hugo-actions/setup-hugo@v2
+        with:
+          version: latest
           extended: true
 
       - name: Build current site
@@ -57,16 +62,16 @@ jobs:
         run: cp changed-urls.txt public/_changed-urls.txt
 
       - name: Upload changed list artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: changed-urls
           path: changed-urls.txt
           if-no-files-found: error
 
       - name: Push built files to dist branch
-        uses: peaceiris/actions-gh-pages@v4
+        uses: actions/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: ${{ env.DIST_BRANCH }}
-          force_orphan: true
+          branch: ${{ env.DIST_BRANCH }}
+          folder: ./public
+          clean: true
+          single-commit: true
