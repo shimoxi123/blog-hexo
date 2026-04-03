@@ -1,8 +1,12 @@
 /* Modern browsers with `scrollbar-*` support (high priority) */
 @supports (scrollbar-width: auto) {
   * {
-    scrollbar-color: fixit-var(scrollbar-thumb-color) fixit-var(scrollbar-track-color);;
+    scrollbar-color: fixit-var(scrollbar-thumb-color) fixit-var(scrollbar-track-color);
     scrollbar-width: fixit-var(scrollbar-width);
+
+    @include media('print') {
+      scrollbar-width: none;
+    }
   }
 }
 
@@ -11,6 +15,10 @@
   height: fixit-var(scrollbar-width-legacy);
   width: fixit-var(scrollbar-width-legacy);
   overflow: visible;
+
+  @include media('print') {
+    display: none;
+  }
 }
 ::-webkit-scrollbar-button {
   height: 0;

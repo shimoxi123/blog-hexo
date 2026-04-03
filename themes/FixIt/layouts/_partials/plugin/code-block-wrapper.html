@@ -58,11 +58,33 @@
       (printf `class="%s" data-copyable="%v"` $class $config.copyable)
     -}}
   {{- end -}}
+  {{- if ne $config.shadow "never" -}}
+    {{- $wrapper =
+      replace $wrapper
+      (printf `class="%s"` $class)
+      (printf `class="%s" data-shadow="%s"` $class $config.shadow)
+    -}}
+  {{- end -}}
+  {{- if $config.group -}}
+    {{- $tabTitle := $config.name | default (strings.FirstUpper .Type) | default "Code" -}}
+    {{- $groupKey := printf "code-tab-group-first:%s" $config.group -}}
+    {{- $isFirst := not (.Page.Store.Get $groupKey) -}}
+    {{- if $isFirst -}}
+      {{- .Page.Store.Set $groupKey true -}}
+    {{- else -}}
+      {{- $targetClass = add $targetClass " d-none" -}}
+    {{- end -}}
+    {{- $wrapper =
+      replace $wrapper
+      (printf `class="%s"` $class)
+      (printf `class="%s" data-tab-title="%s"` $class $tabTitle)
+    -}}
+  {{- end -}}
   {{- if ne .Options.linenostart nil -}}
     {{- $wrapper =
       replace $wrapper
       `class="code-wrapper"`
-      (printf `class="code-wrapper" data-line-start="%v"` .)
+      (printf `class="code-wrapper" data-line-start="%v"` .Options.linenostart)
     -}}
   {{- end -}}
   {{- $wrapperStyle := printf "--fi-max-shown-lines:%v;--fi-line-digit:%v;--fi-line-start:%v;" $maxShownLines $lineNosDigit $lineNoStart -}}
