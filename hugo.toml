@@ -482,13 +482,13 @@ keywords = ["博客", "STM32", "Linux", "C语言", "Minecraft", "编程"]
 defaultTheme = "auto"
 # which hash function used for SRI, when empty, no SRI is used
 # ["sha256", "sha384", "sha512", "md5"]
-fingerprint = ""
+fingerprint = "sha256"
 # date format
 dateFormat = "2006-01-02"
 # website images for Open Graph and Twitter Cards
 images = []
 # FixIt 0.2.12 | NEW enable PWA
-enablePWA = false
+enablePWA = true
 # FixIt 0.2.14 | NEW whether to add external Icon for external links automatically
 externalIcon = true
 # FixIt 0.3.13 | NEW whether to capitalize titles
@@ -629,7 +629,7 @@ typeit = false
 
 # FixIt 0.2.18 | NEW Breadcrumb config
 [params.breadcrumb]
-enable = false
+enable = true
 sticky = false
 showHome = false
 # FixIt 0.3.13 | NEW
@@ -726,7 +726,7 @@ maxCount = 10
 
 # FixIt 0.2.17 | NEW TagCloud config for tags page
 [params.tagcloud]
-enable = false
+enable = true
 min = 14 # Minimum font size in px
 max = 32 # Maximum font size in px
 peakCount = 10 # Maximum count of posts per tag
@@ -982,8 +982,7 @@ sogou = ""
 # Site SEO config
 [params.seo]
 # image URL
-image = ""
-# thumbnail URL
+image = "/android-chrome-512x512.png"
 thumbnailUrl = ""
 
 # Analytics config
@@ -1076,7 +1075,7 @@ style = "" # ["", "mp", "identicon", "monsterid", "wavatar", "retro", "blank", "
 [params.backToTop]
 enable = true
 # FixIt 0.4.0 | CHANGED whether to show the scroll percent indicator around the back to top button
-scrollpercent = false
+scrollpercent = true
 
 # FixIt 0.2.16 | NEW Reading progress bar
 [params.readingProgress]
@@ -1093,7 +1092,7 @@ height = "2px"
 # FixIt 0.2.17 | NEW Progress bar in the top during page loading.
 # For more information: https://github.com/CodeByZach/pace
 [params.pace]
-enable = false
+enable = true
 # All available colors:
 # ["black", "blue", "green", "orange", "pink", "purple", "red", "silver", "white", "yellow"]
 color = "blue"
@@ -1306,7 +1305,7 @@ readingTime = true
 # FixIt 0.2.17 | NEW end of post flag
 endFlag = ""
 # FixIt 0.2.18 | NEW whether to enable instant.page
-instantPage = false
+instantPage = true
 # FixIt 0.3.0 | NEW whether to enable collection list at the sidebar
 collectionList = false
 # FixIt 0.3.0 | NEW whether to enable collection navigation at the end of the post
@@ -1367,7 +1366,7 @@ h6 = "{h2}.{h3}.{h4}.{h5}.{h6} {title}"
 # FixIt 0.4.0 | CHANGED mathematical formulas configuration
 # See http://fixit.lruihao.cn/documentation/content-management/markdown-syntax/extended/#formula
 [params.page.math]
-enable = true
+enable = false
 # mathematical formulas rendering engines, optional values: ["katex", "mathjax"]
 type = "katex"
 
@@ -1448,7 +1447,7 @@ fullscreen = true
 
 # FixIt 0.3.0 | NEW Related content config (https://gohugo.io/content-management/related/)
 [params.page.related]
-enable = false
+enable = true
 count = 5
 # FixIt 0.3.20 | NEW position of related content, optional values: ["aside", "footer"]
 position = [
@@ -1475,8 +1474,8 @@ mode = "static"
 # Social share links in post page
 [params.page.share]
 enable = true
-Twitter = true
-Facebook = true
+Twitter = false
+Facebook = false
 Linkedin = false
 Whatsapp = false
 Pinterest = false
@@ -1662,7 +1661,7 @@ inputPosition = "top"
 lang = "zh-CN"
 lightTheme = "light"
 darkTheme = "dark"
-lazyLoad = false
+  lazyLoad = true
 
 # Third-party library config
 [params.page.library]
