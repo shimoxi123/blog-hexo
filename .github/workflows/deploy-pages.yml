@@ -34,7 +34,7 @@ jobs:
           node-version: latest
 
       - name: Setup Hugo (Latest)
-        uses: hugo-actions/setup-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           version: latest
           extended: true
@@ -69,7 +69,7 @@ jobs:
           if-no-files-found: error
 
       - name: Push built files to dist branch
-        uses: actions/github-pages-deploy-action@v4
+        uses: peaceiris/actions-gh-pages@v4
         with:
           branch: ${{ env.DIST_BRANCH }}
           folder: ./public
