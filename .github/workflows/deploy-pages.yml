@@ -20,13 +20,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
           submodules: recursive
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: latest
 
@@ -61,7 +61,7 @@ jobs:
         run: cp changed-urls.txt public/_changed-urls.txt
 
       - name: Upload changed list artifact
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7
         with:
           name: changed-urls
           path: changed-urls.txt
