@@ -12,6 +12,8 @@
 
 # website title
 title = "san3.cn"
+# suppress warnings
+ignoreLogs = ['warning-v1-dev']
 # Hostname (and path) to the root
 baseURL = "https://www.san3.cn"
 # theme list
@@ -19,7 +21,7 @@ theme = ["FixIt"] # enable in your site config file
 # determines default content language ["en", "zh-cn", "fr", "pl", ...]
 defaultContentLanguage = "zh-cn"
 # language code ["en", "zh-CN", "fr", "pl", ...]
-languageCode = "zh-CN"
+locale = "zh-CN"
 # language name ["English", "简体中文", "Français", "Polski", ...]
 languageName = "简体中文"
 # whether to include Chinese/Japanese/Korean
@@ -490,7 +492,8 @@ images = []
 # FixIt 0.2.12 | NEW enable PWA
 enablePWA = true
 # FixIt 0.2.14 | NEW whether to add external Icon for external links automatically
-externalIcon = true
+[params.link]
+external_icon = true
 # FixIt 0.3.13 | NEW whether to capitalize titles
 capitalizeTitles = false
 # FixIt 0.3.0 | NEW whether to add site title to the title of every page

@@ -38,6 +38,17 @@ jobs:
         env:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+      - name: Setup Dart Sass
+        run: |
+          npm install -g sass
+          NPM_BIN="$(npm prefix -g)/bin"
+          echo "$NPM_BIN" >> $GITHUB_PATH
+          # Ensure Hugo can find sass even if npm global bin isn't on default PATH
+          if [ "$NPM_BIN" != "/usr/local/bin" ] && [ -x "$NPM_BIN/sass" ]; then
+            sudo ln -sf "$NPM_BIN/sass" /usr/local/bin/sass
+          fi
+          sass --version
+
       - name: Build current site
         run: hugo --minify --destination public
 
