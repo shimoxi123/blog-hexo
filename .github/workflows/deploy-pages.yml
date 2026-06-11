@@ -40,13 +40,13 @@ jobs:
 
       - name: Setup Dart Sass
         run: |
-          npm install -g sass
-          NPM_BIN="$(npm prefix -g)/bin"
-          echo "$NPM_BIN" >> $GITHUB_PATH
-          # Ensure Hugo can find sass even if npm global bin isn't on default PATH
-          if [ "$NPM_BIN" != "/usr/local/bin" ] && [ -x "$NPM_BIN/sass" ]; then
-            sudo ln -sf "$NPM_BIN/sass" /usr/local/bin/sass
-          fi
+          set -euo pipefail
+          # Hugo's toCSS uses stdin/stdout protocol — needs native dart-sass binary, not npm wrapper
+          DART_SASS_VERSION=$(curl -sSL https://api.github.com/repos/sass/dart-sass/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+          echo "Installing Dart Sass ${DART_SASS_VERSION}"
+          curl -sSL "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz" -o /tmp/dart-sass.tar.gz
+          sudo tar -xzf /tmp/dart-sass.tar.gz -C /usr/local/lib
+          sudo ln -sf /usr/local/lib/dart-sass/sass /usr/local/bin/sass
           sass --version
 
       - name: Build current site
